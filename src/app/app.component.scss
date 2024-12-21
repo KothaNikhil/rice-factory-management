@@ -2,23 +2,50 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #121212; /* Matches dark theme background */
-    color: white; /* Ensures text visibility */
   }
   
-  mat-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  .logo {
+    height: 40px;
   }
   
   .spacer {
     flex: 1;
   }
   
+  .nav-links {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-left: 16px;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.3s;
+  }
+  
+  .nav-links a:hover {
+    color: #f48fb1; /* Accent color on hover */
+  }
+  
+  .active-link {
+    text-decoration: underline;
+  }
+  
   .content {
     flex: 1;
     padding: 16px;
     overflow-y: auto;
+  }
+
+  .userMenu{
+    height: 24px; /* Same as size of mat-icon */
+  }
+
+  .userMenu:hover {
+    cursor: pointer;
   }
   
