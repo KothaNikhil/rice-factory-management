@@ -1,1 +1,33 @@
-<router-outlet></router-outlet>
+<div class="mat-app-background">
+    <!-- Header Section -->
+    <mat-toolbar color="primary">
+      <!-- Logo and App Title -->
+      <img src="assets/logo.png" alt="" class="logo" />
+      <span>Rice Factory Management</span>
+  
+      <!-- Spacer -->
+      <span class="spacer"></span>
+  
+      <!-- Navigation Buttons -->
+      <button mat-button type="button" routerLink="/dashboard">Dashboard</button>
+      <button mat-button type="button" routerLink="/stock">Stock</button>
+      <button mat-button type="button" routerLink="/transactions">Transactions</button>
+      <button mat-button type="button" routerLink="/reports">Reports</button>
+  
+      <!-- Dropdown Menu -->
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item>Settings</button>
+        <button mat-menu-item>Logout</button>
+      </mat-menu>
+      <button mat-icon-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </mat-toolbar>
+  
+    <!-- Main Body Section -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  
