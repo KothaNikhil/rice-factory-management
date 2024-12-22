@@ -1,51 +1,117 @@
 .mat-app-background {
     height: 100vh;
     display: flex;
-    flex-direction: column;
-  }
-  
-  .logo {
+}
+
+.logo {
     height: 40px;
-  }
-  
-  .spacer {
+}
+
+.title {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.spacer {
     flex: 1;
-  }
-  
-  .nav-links {
+}
+
+.nav-links {
     display: flex;
+    flex-direction: column;
     gap: 16px;
-    align-items: center;
-    margin-left: 16px;
-  }
-  
-  .nav-links a {
+    margin-bottom: 20px;
+}
+
+.nav-links a {
     color: white;
     text-decoration: none;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 16px;
+    padding: 10px 0;
     transition: color 0.3s;
-  }
-  
-  .nav-links a:hover {
+}
+
+.nav-links a:hover {
     color: #f48fb1; /* Accent color on hover */
-  }
-  
-  .active-link {
+}
+
+.nav-links a.active-link {
+    font-weight: bold;
     text-decoration: underline;
-  }
-  
-  .content {
+    color: #90caf9; /* Lighter shade of blue for active link */
+}
+
+.menu-icon {
+    margin-right: 8px; /* Adjust the value as needed */
+}
+
+.content {
     flex: 1;
-    padding: 16px;
+    padding: 20px;
     overflow-y: auto;
-  }
+    margin-left: 200px; /* Adjust based on the width of the vertical toolbar */
+}
 
-  .userMenu{
+.userMenu {
     height: 24px; /* Same as size of mat-icon */
-  }
+}
 
-  .userMenu:hover {
+.userMenu:hover {
     cursor: pointer;
-  }
-  
+}
+
+.vertical-toolbar {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #3f51b5; /* Adjust the color as needed */
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.vertical-toolbar .logo {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.vertical-toolbar .title {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.vertical-toolbar .nav-links {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.vertical-toolbar .nav-links a {
+    padding: 10px 0;
+    text-decoration: none;
+}
+
+.vertical-toolbar .nav-links a.active-link {
+    font-weight: bold;
+}
+
+.vertical-toolbar .notification,
+.vertical-toolbar .user-menu {
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-top: 20px;
+}
+
+.vertical-toolbar .notification .menu-icon,
+.vertical-toolbar .user-menu .menu-icon {
+    margin-right: 8px;
+}
+
+.vertical-toolbar .user-menu mat-button {
+    margin-right: 8px;
+}

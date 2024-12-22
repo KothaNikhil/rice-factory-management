@@ -1,25 +1,28 @@
 <div class="dark-theme mat-app-background">
-    <mat-toolbar color="primary">
-        <img src="assets/logo.png" alt="" class="logo" />
-        <span>Rice Factory Management</span>
-        <!-- <span class="spacer"></span> -->
-        
+    <div class="vertical-toolbar">
+        <div class="title">
+            <span>SMR</span>
+        </div>
         <nav class="nav-links">
-            <a routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
-            <a routerLink="/stock" routerLinkActive="active-link">Stock</a>
-            <a routerLink="/transactions" routerLinkActive="active-link">Transactions</a>
-            <a routerLink="/reports" routerLinkActive="active-link">Reports</a>
+            <a routerLink="/dashboard" routerLinkActive="active-link"><i class="fas fa-tachometer-alt menu-icon"></i> Dashboard</a>
+            <a routerLink="/stock" routerLinkActive="active-link"><i class="fas fa-boxes menu-icon"></i> Stock</a>
+            <a routerLink="/transactions" routerLinkActive="active-link"><i class="fas fa-exchange-alt menu-icon"></i> Transactions</a>
+            <a routerLink="/reports" routerLinkActive="active-link"><i class="fas fa-chart-line menu-icon"></i> Reports</a>
         </nav>
-        <span class="spacer"></span>
-        <mat-menu #userMenu="matMenu">
-            <button mat-menu-item>Profile</button>
-            <button mat-menu-item>Settings</button>
-            <button mat-menu-item>Logout</button>
-        </mat-menu>
-        <mat-button mat-icon-button class="userMenu" title="userMenu" [matMenuTriggerFor]="userMenu">
-            <mat-icon>account_circle</mat-icon>
-        </mat-button>
-    </mat-toolbar>
+        <div class="spacer"></div>
+        <div class="notification">
+            <i class="fas fa-bell menu-icon"></i> Notifications
+        </div>
+        <div class="user-menu">
+            <i class="fas fa-user-circle menu-icon"></i>
+            <span>User Menu</span>
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item>Profile</button>
+                <button mat-menu-item>Settings</button>
+                <button mat-menu-item>Logout</button>
+            </mat-menu>
+        </div>
+    </div>
     <div class="content">
         <router-outlet></router-outlet>
     </div>
