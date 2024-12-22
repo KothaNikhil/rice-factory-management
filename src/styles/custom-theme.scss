@@ -1,40 +1,47 @@
 @use '@angular/material' as mat;
 
 // Define your custom palettes
-$primary-palette: mat.define-palette(mat.$blue-grey-palette);
-$accent-palette: mat.define-palette(mat.$cyan-palette, A200, A100, A400);
-$warn-palette: mat.define-palette(mat.$deep-orange-palette);
+$primary-palette: mat.define-palette(mat.$green-palette);
+$accent-palette: mat.define-palette(mat.$lime-palette, A200, A100, A400);
+$warn-palette: mat.define-palette(mat.$red-palette);
 
-// Define the dark theme background
-$dark-background: (
-  background: #121212,
-  hover: #1e1e1e,
-  card: #1e1e1e,
-  dialog: #1e1e1e,
-  disabled-button: #333333,
-  raised-button: #333333,
-  focused-button: #444444,
-  selected-button: #555555,
-  selected-disabled-button: #666666,
-  disabled: rgba(255, 255, 255, 0.3),
-  divider: rgba(255, 255, 255, 0.12)
+// Define color variables
+$primary-color: mat.get-color-from-palette($primary-palette);
+$primary-color-light: mat.get-color-from-palette($primary-palette, 100);
+$primary-color-dark: mat.get-color-from-palette($primary-palette, 700);
+$accent-color: mat.get-color-from-palette($accent-palette, A200);
+$warn-color: mat.get-color-from-palette($warn-palette);
+
+// Define the light theme background
+$light-background: (
+  background: #ffffff,
+  hover: #f5f5f5,
+  card: #ffffff,
+  dialog: #ffffff,
+  disabled-button: #e0e0e0,
+  raised-button: #e0e0e0,
+  focused-button: #d0d0d0,
+  selected-button: #c0c0c0,
+  selected-disabled-button: #b0b0b0,
+  disabled: rgba(0, 0, 0, 0.3),
+  divider: rgba(0, 0, 0, 0.12)
 );
 
-// Create the dark theme
-$custom-dark-theme: mat.define-dark-theme((
+// Create the light theme
+$custom-light-theme: mat.define-light-theme((
   color: (
     primary: $primary-palette,
     accent: $accent-palette,
     warn: $warn-palette,
   ),
-  background: $dark-background,
+  background: $light-background,
 ));
 
-.dark-theme{
+.light-theme {
     .mat-app-background {
-        background-color: #121212 !important;
-        color: white !important;
+        background-color: #ffffff !important;
+        color: black !important;
     }
-// Include Angular Material theme styles
-@include mat.all-component-themes($custom-dark-theme);
+    // Include Angular Material theme styles
+    @include mat.all-component-themes($custom-light-theme);
 }
