@@ -1,14 +1,49 @@
 @use '@angular/material' as mat;
 
+$black: #000000;
+$white: #ffffff;
+
 // Define your custom palettes
-$primary-palette: mat.define-palette(mat.$green-palette);
+$custom-green-palette: (
+  50: #e8f5e9,
+  100: #c8e6c9,
+  200: #a5d6a7,
+  300: #81c784,
+  400: #66bb6a,
+  500: #4caf50,
+  600: #43a047,
+  700: #388e3c,
+  800: #2e7d32,
+  900: #1b5e20,
+  A100: #b9f6ca,
+  A200: #69f0ae,
+  A400: #00e676,
+  A700: #00c853,
+  contrast: (50: mat-color($black, 0.87),
+    100: mat-color($black, 0.87),
+    200: mat-color($black, 0.87),
+    300: mat-color($black, 0.87),
+    400: mat-color($black, 0.87),
+    500: mat-color($white, 0.87),
+    600: mat-color($white, 0.87),
+    700: mat-color($white, 0.87),
+    800: mat-color($white, 0.87),
+    900: mat-color($white, 0.87),
+    A100: mat-color($black, 0.87),
+    A200: mat-color($black, 0.87),
+    A400: mat-color($black, 0.87),
+    A700: mat-color($black, 0.87),
+  )
+);
+
+$primary-palette: mat.define-palette($custom-green-palette);
 $accent-palette: mat.define-palette(mat.$lime-palette, A200, A100, A400);
 $warn-palette: mat.define-palette(mat.$red-palette);
 
 // Define color variables
 $primary-color: mat.get-color-from-palette($primary-palette);
 $primary-color-light: mat.get-color-from-palette($primary-palette, 100);
-$primary-color-dark: mat.get-color-from-palette($primary-palette, 700);
+$primary-color-dark: mat.get-color-from-palette($primary-palette, 900);
 $accent-color: mat.get-color-from-palette($accent-palette, A200);
 $warn-color: mat.get-color-from-palette($warn-palette);
 
@@ -17,7 +52,7 @@ $light-background: (
   background: #ffffff,
   hover: #f5f5f5,
   card: #ffffff,
-  dialog: #ffffff,
+  dialog: #f0f0f0,
   disabled-button: #e0e0e0,
   raised-button: #e0e0e0,
   focused-button: #d0d0d0,
@@ -28,20 +63,28 @@ $light-background: (
 );
 
 // Create the light theme
-$custom-light-theme: mat.define-light-theme((
-  color: (
-    primary: $primary-palette,
-    accent: $accent-palette,
-    warn: $warn-palette,
-  ),
-  background: $light-background,
-));
+$custom-light-theme: mat.define-light-theme((color: (primary: $primary-palette,
+        accent: $accent-palette,
+        warn: $warn-palette,
+      ),
+      background: $light-background,
+    ));
 
 .light-theme {
-    .mat-app-background {
-        background-color: #ffffff !important;
-        color: black !important;
+  .mat-app-background {
+    background-color: map-get($light-background, background) !important;
+    color: $primary-color-dark !important; // Dynamically set dark text color
+  }
+
+  button {
+    &:hover {
+      background-color: map-get($light-background, hover) !important;
     }
-    // Include Angular Material theme styles
-    @include mat.all-component-themes($custom-light-theme);
+
+    &:focus {
+      background-color: map-get($light-background, focused-button) !important;
+    }
+  }
+
+  @include mat.all-component-themes($custom-light-theme);
 }

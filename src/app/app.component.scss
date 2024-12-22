@@ -10,12 +10,13 @@
     flex-direction: column;
     width: 200px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    background-color: map-get(theme.$light-background, dialog);
 }
 
 .vertical-toolbar .title {
-    color: theme.$primary-color;
+    color: theme.$primary-color-dark;
     font-size: 24px;
-    padding: 30px 20px 0 20px;
+    padding: 30px 20px 20px 20px;
 }
 
 .vertical-toolbar .nav-links {
