@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CATEGORIES } from 'src/app/shared/constants/predefined-items';
 
 @Component({
   selector: 'app-stock-management',
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stock-management.component.scss']
 })
 export class StockManagementComponent implements OnInit {
+  categories = CATEGORIES;
 
   constructor() { }
 
   ngOnInit(): void {
+    
   }
-
 }

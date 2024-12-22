@@ -1,1 +1,25 @@
-<p>stock-management works!</p>
+<div>
+  <h2>Stock Management</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{ category.name }}</td>
+        <td *ngFor="let item of category.items">
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unit }}</td>
+          </tr>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
