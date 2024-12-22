@@ -1,6 +1,6 @@
 form {
   max-width: 500px;
-  margin: auto;
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -32,6 +32,8 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  align-self: flex-end; /* Aligns the button to the right */
+  width: 150px; /* Sets a fixed width */
 }
 
 button:hover {
