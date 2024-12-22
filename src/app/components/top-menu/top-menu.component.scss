@@ -1,0 +1,20 @@
+@use 'src/styles/custom-theme' as theme;
+
+.top-menu{
+  margin-bottom: 20px;
+}
+
+.nav-links a {
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  transition: color 0.3s;
+}
+
+.menu-icon {
+  margin-right: 8px;
+  color: theme.$primary-color; 
+}

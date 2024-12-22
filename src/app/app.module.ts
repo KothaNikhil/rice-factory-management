@@ -10,11 +10,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { VerticalToolbarComponent } from './components/vertical-toolbar/vertical-toolbar.component';
+import { TopMenuComponent } from './components/top-menu/top-menu.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    VerticalToolbarComponent,
+    TopMenuComponent
   ],
   imports: [
     BrowserModule,
