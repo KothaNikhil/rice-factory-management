@@ -16,7 +16,7 @@ export class CategoryService {
   }
 
   // Add a new category
-  addCategory(category: { id: number; name: string }): void {
+  addCategory(category: { id: number; name: string, items: any }): void {
     this.categories.push(category);
   }
 
