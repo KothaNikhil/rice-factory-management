@@ -55,9 +55,16 @@
     height: 20px;
 }
 
-.content {
+.body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    margin-left: 200px;
+}
+
+.content{
+    margin-left: 100px;
+}
+
+.top-menu{
+    margin-bottom: 20px;
 }
