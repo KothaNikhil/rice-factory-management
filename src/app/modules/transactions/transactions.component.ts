@@ -35,22 +35,36 @@ export class TransactionsComponent {
   }
 
   onSubmit() {
-    console.log("transaction", this.transaction);
-    this.transactionService.addTransaction(this.transaction);
-
-    // Reset the form
-    this.transaction = {
-      transactionType: '',
-      name: '',
-      item: null,
-      quantity: 0,
-      price: 0,
-    };
+    this.transactionService.addTransaction(this.transaction).subscribe(
+      (response) => {
+        console.log('Transaction added successfully:', response);
+  
+        // Optionally, refresh the transactions list or display a success message
+        this.LogTransactions(); 
+  
+        // Reset the form
+        this.transaction = {
+          transactionType: '',
+          name: '',
+          item: null,
+          quantity: 0,
+          price: 0,
+        };
+      },
+      (error) => {
+        console.error('Error adding transaction:', error);
+      }
+    );
   }
 
   LogTransactions() {
-    this.transactionService.getTransactions().subscribe(transactions => {
-      console.log("transactions: ", transactions);
+    this.transactionService.getTransactions().subscribe({
+      next: (transactions) => {
+        console.log('Transactions fetched:', transactions);
+      },
+      error: (error) => {
+        console.error('Error fetching transactions:', error);
+      }
     });
   }
     
