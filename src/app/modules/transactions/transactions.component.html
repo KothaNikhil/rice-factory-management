@@ -25,23 +25,30 @@
   <!-- Item -->
   <div class="form-group">
     <label for="item">Item</label>
-    <select id="item" name="item" [(ngModel)]="transaction.itemId" required>
-      <option *ngFor="let item of filteredItems" [value]="item.id">{{ item.name }}</option>
+    <select id="item" name="item" [(ngModel)]="transaction.item" (change)="onItemChange($event)" required>
+      <option *ngFor="let item of filteredItems" [value]="item.name">{{ item.name }}</option>
     </select>
   </div>
 
   <!-- Quantity -->
   <div class="form-group">
     <label for="quantity">Quantity</label>
-    <input id="quantity" name="quantity" type="number" [(ngModel)]="transaction.quantity" placeholder="Enter quantity" min="1" required />
+    <div class="input-group">
+      <input id="quantity" name="quantity" type="number" [(ngModel)]="transaction.quantity" placeholder="Enter quantity" min="1" required />
+      <span *ngIf="selectedItemUnit!=''" class="input-group-addon">{{ selectedItemUnit }}</span>
+    </div>
   </div>
 
   <!-- Price -->
   <div class="form-group">
     <label for="price">Price</label>
-    <input id="price" name="price" type="number" [(ngModel)]="transaction.price" placeholder="Enter price per unit" min="0.01" step="0.01" required />
+    <div class="input-group">
+      <input id="price" name="price" type="number" [(ngModel)]="transaction.price" placeholder="Enter price per unit" min="0.01" step="0.01" required />
+      <span class="input-group-addon">per unit</span>
+    </div>
   </div>
 
   <!-- Submit Button -->
   <button type="submit" [disabled]="!transactionForm.valid">Add Transaction</button>
+  <button type="button" (click)="LogTransactions()">Get Transactions</button>
 </form>

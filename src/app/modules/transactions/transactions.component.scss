@@ -14,15 +14,30 @@ form {
 
 label {
   font-weight: bold;
-  flex: 1; /* Ensures labels have a consistent width */
+  width: 150px; /* Ensures labels have a consistent width */
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  flex: 1; /* Ensures inputs/selects take more space */
 }
 
 input, select {
-  flex: 2; /* Ensures inputs/selects take more space */
+  flex: 1;
   padding: 0.5rem;
   font-size: 1rem;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+
+.input-group-addon {
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
 }
 
 button {
