@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CATEGORIES } from 'src/app/shared/constants/predefined-items';
 import { Transaction, TransactionService } from './services/transaction.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-transactions',
@@ -8,6 +9,8 @@ import { Transaction, TransactionService } from './services/transaction.service'
   styleUrls: ['./transactions.component.scss']
 })
 export class TransactionsComponent {
+  @ViewChild('transactionForm') transactionForm: NgForm | undefined;
+  
   categories = CATEGORIES; // Assume CATEGORIES is imported
   selectedCategory = null;
   selectedItemUnit = '';
@@ -41,6 +44,11 @@ export class TransactionsComponent {
   
         // Optionally, refresh the transactions list or display a success message
         this.LogTransactions(); 
+
+        // Reset the form
+        if (this.transactionForm) {
+          this.transactionForm.resetForm();
+        }
   
         // Reset the form
         this.transaction = {

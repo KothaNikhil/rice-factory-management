@@ -15,7 +15,7 @@ export interface Transaction {
 })
 export class TransactionService {
   private transactions: Transaction[] = [];
-  private apiUrl = 'http://localhost:3000/transactions';
+  private apiUrl = 'http://localhost:5000/api/transactions';
 
   constructor(private http: HttpClient) {}
 
