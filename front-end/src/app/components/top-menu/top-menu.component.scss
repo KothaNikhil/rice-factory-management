@@ -1,5 +1,3 @@
-@use 'src/styles/custom-theme' as theme;
-
 .top-menu{
   margin-bottom: 20px;
 }
@@ -16,5 +14,4 @@
 
 .menu-icon {
   margin-right: 8px;
-  color: theme.$primary-color; 
 }
