@@ -6,8 +6,8 @@ export interface Transaction {
   transactionType: string;
   name: string;
   item: string | null;
-  quantity: number;
-  price: number;
+  quantity: number | null;
+  price: number | null;
 }
 
 @Injectable({

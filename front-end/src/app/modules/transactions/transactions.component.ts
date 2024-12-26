@@ -20,8 +20,8 @@ export class TransactionsComponent {
     transactionType: '',
     name: '',
     item: null,
-    quantity: 0,
-    price: 0,
+    quantity: null,
+    price: null,
   };
 
   constructor(private transactionService: TransactionService) { }
@@ -30,6 +30,15 @@ export class TransactionsComponent {
     const categoryId = +event.target.value;
     const category = this.categories.find(cat => cat.id === categoryId);
     this.filteredItems = category ? category.items : [];
+
+    // Automatically select the first item if available
+    if (this.filteredItems && this.filteredItems.length > 0) {
+      this.transaction.item = this.filteredItems[0].name;
+      this.onItemChange({ target: { value: this.transaction.item } });
+    } else {
+      this.transaction.item = '';
+      this.selectedItemUnit = '';
+    }
   }
 
   onItemChange(event: any) {
@@ -42,22 +51,10 @@ export class TransactionsComponent {
       (response) => {
         console.log('Transaction added successfully:', response);
   
-        // Optionally, refresh the transactions list or display a success message
-        this.LogTransactions(); 
-
         // Reset the form
         if (this.transactionForm) {
-          this.transactionForm.resetForm();
+          this.transactionForm.reset();
         }
-  
-        // Reset the form
-        this.transaction = {
-          transactionType: '',
-          name: '',
-          item: null,
-          quantity: 0,
-          price: 0,
-        };
       },
       (error) => {
         console.error('Error adding transaction:', error);
