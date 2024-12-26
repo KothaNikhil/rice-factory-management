@@ -14,13 +14,7 @@ form {
 
 label {
   font-weight: bold;
-  width: 150px; /* Ensures labels have a consistent width */
-}
-
-.input-group {
-  display: flex;
-  align-items: center;
-  flex: 1; /* Ensures inputs/selects take more space */
+  width: 150px;
 }
 
 input, select {
@@ -31,6 +25,12 @@ input, select {
   border: 1px solid #ccc;
 }
 
+.input-group {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
 .input-group-addon {
   padding: 0.5rem;
   font-size: 1rem;
@@ -38,24 +38,4 @@ input, select {
   border: 1px solid #ccc;
   border-left: none;
   border-radius: 0 4px 4px 0;
-}
-
-button {
-  background-color: #4CAF50;
-  padding: 0.5rem 1rem;
-  color: black;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  align-self: flex-end; /* Aligns the button to the right */
-  width: 150px; /* Sets a fixed width */
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-button:disabled {
-  background-color: #ccc; /* Change to desired disabled color */
-  cursor: not-allowed; /* Change cursor to indicate disabled state */
 }

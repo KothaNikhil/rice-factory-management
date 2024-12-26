@@ -35,7 +35,7 @@
     <label for="quantity">Quantity</label>
     <div class="input-group">
       <input id="quantity" name="quantity" type="number" [(ngModel)]="transaction.quantity" placeholder="Enter quantity" min="1" required />
-      <span *ngIf="selectedItemUnit!=''" class="input-group-addon">{{ selectedItemUnit }}</span>
+      <span *ngIf="selectedItemUnit" class="input-group-addon">{{ selectedItemUnit }}</span>
     </div>
   </div>
 

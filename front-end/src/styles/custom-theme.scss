@@ -19,7 +19,8 @@ $custom-green-palette: (
   A200: #69f0ae,
   A400: #00e676,
   A700: #00c853,
-  contrast: (50: mat-color($black, 0.87),
+  contrast: (
+    50: mat-color($black, 0.87),
     100: mat-color($black, 0.87),
     200: mat-color($black, 0.87),
     300: mat-color($black, 0.87),
@@ -63,12 +64,14 @@ $light-background: (
 );
 
 // Create the light theme
-$custom-light-theme: mat.define-light-theme((color: (primary: $primary-palette,
-        accent: $accent-palette,
-        warn: $warn-palette,
-      ),
-      background: $light-background,
-    ));
+$custom-light-theme: mat.define-light-theme((
+  color: (
+    primary: $primary-palette,
+    accent: $accent-palette,
+    warn: $warn-palette,
+  ),
+  background: $light-background,
+));
 
 .light-theme {
   .mat-app-background {
@@ -77,12 +80,26 @@ $custom-light-theme: mat.define-light-theme((color: (primary: $primary-palette,
   }
 
   button {
+    background-color: $primary-color; // Primary
+    padding: 0.5rem 1rem;
+    color: mat.get-contrast-color-from-palette($primary-palette, 500); // Text
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: flex-end;
+    width: 150px;
+
     &:hover {
-      background-color: map-get($light-background, hover) !important;
+      background-color: $primary-color-dark; // Primary Dark
+    }
+
+    &:disabled {
+      background-color: map-get($light-background, disabled-button); // Disabled
+      cursor: not-allowed;
     }
 
     &:focus {
-      background-color: map-get($light-background, focused-button) !important;
+      background-color: $primary-color-dark; // Primary Dark
     }
   }
 
