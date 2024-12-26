@@ -1,5 +1,5 @@
 form {
-  max-width: 500px;
+  max-width: 400px;
   margin-left: 10px;
   display: flex;
   flex-direction: column;
@@ -8,17 +8,19 @@ form {
 
 .form-group {
   display: flex;
+  flex-wrap: wrap; /* Ensure the content wraps if it doesn't fit */
   align-items: center;
-  gap: 1rem;
 }
 
 label {
   font-weight: bold;
-  width: 150px;
+  width: 140px;
+  flex-shrink: 0; /* Prevent label from shrinking */
 }
 
 input, select {
   flex: 1;
+  min-width: 0; /* Allow inputs to shrink properly */
   padding: 0.5rem;
   font-size: 1rem;
   border-radius: 4px;
@@ -29,6 +31,7 @@ input, select {
   display: flex;
   align-items: center;
   flex: 1;
+  min-width: 0; /* Allow group to shrink properly */
 }
 
 .input-group-addon {
@@ -38,4 +41,5 @@ input, select {
   border: 1px solid #ccc;
   border-left: none;
   border-radius: 0 4px 4px 0;
+  white-space: nowrap; /* Prevent wrapping of addon content */
 }
