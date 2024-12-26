@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { TransactionsRoutingModule } from './transactions-routing.module';
 import { TransactionsComponent } from './transactions.component';
 import { FormsModule } from '@angular/forms';
+import { TransactionsFormComponent } from './transactions-form/transactions-form.component';
 
 
 @NgModule({
   declarations: [
-    TransactionsComponent
+    TransactionsComponent,
+    TransactionsFormComponent
   ],
   imports: [
     CommonModule,
