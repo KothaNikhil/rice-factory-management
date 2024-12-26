@@ -4,9 +4,10 @@ import { NgForm } from '@angular/forms';
 import { Transaction, TransactionService } from '../services/transaction.service';
 
 @Component({
-  selector: 'app-transactions-form',
-  templateUrl: './transactions-form.component.html',
-  styleUrls: ['./transactions-form.component.scss']
+    selector: 'app-transactions-form',
+    templateUrl: './transactions-form.component.html',
+    styleUrls: ['./transactions-form.component.scss'],
+    standalone: false
 })
 export class TransactionsFormComponent {
   @ViewChild('transactionForm') transactionForm: NgForm | undefined;
