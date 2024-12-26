@@ -103,5 +103,11 @@ $custom-light-theme: mat.define-light-theme((
     }
   }
 
+  .rfm-app-line{
+    border-bottom: 0.5px solid mat.get-color-from-palette($primary-palette);
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
   @include mat.all-component-themes($custom-light-theme);
 }

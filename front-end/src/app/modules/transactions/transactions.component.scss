@@ -1,45 +1,5 @@
-form {
-  max-width: 400px;
+.transactions-form{
+  display: block;
+  width: 400px;
   margin-left: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  .form-group {
-    display: flex;
-    flex-wrap: wrap; // Ensure the content wraps if it doesn't fit
-    align-items: center;
-
-    label {
-      font-weight: bold;
-      width: 140px;
-      flex-shrink: 0; // Prevent label from shrinking
-    }
-
-    input, select {
-      flex: 1;
-      min-width: 0; // Allow inputs to shrink properly
-      padding: 0.5rem;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    .input-group {
-      display: flex;
-      align-items: center;
-      flex: 1;
-      min-width: 0; // Allow group to shrink properly
-
-      .input-group-addon {
-        padding: 0.5rem;
-        font-size: 1rem;
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        border-left: none;
-        border-radius: 0 4px 4px 0;
-        white-space: nowrap; // Prevent wrapping of addon content
-      }
-    }
-  }
 }
