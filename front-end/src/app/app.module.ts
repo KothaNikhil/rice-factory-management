@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,24 +15,17 @@ import { VerticalToolbarComponent } from './components/vertical-toolbar/vertical
 import { TopMenuComponent } from './components/top-menu/top-menu.component';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    VerticalToolbarComponent,
-    TopMenuComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatIconModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        VerticalToolbarComponent,
+        TopMenuComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatMenuModule,
+        MatIconModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
