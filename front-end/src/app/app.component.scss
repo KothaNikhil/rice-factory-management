@@ -1,10 +1,9 @@
 @use '@angular/material' as mat;
 
 .mat-app-background {
+    display: flex;
     background-color: white;
     color: #1b5e20;
-    height: 100vh;
-    display: flex;
 }
 
 .body {

@@ -5,7 +5,8 @@ import { TransactionsRoutingModule } from './transactions-routing.module';
 import { TransactionsComponent } from './transactions.component';
 import { FormsModule } from '@angular/forms';
 import { TransactionsFormComponent } from './transactions-form/transactions-form.component';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,9 @@ import { TransactionsFormComponent } from './transactions-form/transactions-form
   imports: [
     CommonModule,
     TransactionsRoutingModule,
-    FormsModule
+    FormsModule,
+    MatTableModule,
+    MatSortModule
   ]
 })
 export class TransactionsModule { }
