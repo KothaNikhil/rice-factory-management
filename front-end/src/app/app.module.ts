@@ -13,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { VerticalToolbarComponent } from './components/vertical-toolbar/vertical-toolbar.component';
 import { TopMenuComponent } from './components/top-menu/top-menu.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 @NgModule({
@@ -39,6 +40,8 @@ import { TopMenuComponent } from './components/top-menu/top-menu.component';
     //   useClass: AuthInterceptor,
     //   multi: true
     // }
+  
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })

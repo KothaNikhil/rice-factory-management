@@ -1,15 +1,40 @@
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat.core();
+html, body {
+  height: 100%;
+}
 
-/* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+button {
+  background-color: rgb(0, 173, 0); // Primary
+  padding: 0.5rem 1rem;
+  color: black; // Text
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-end;
+  width: 150px;
+
+  &:hover {
+    background-color: rgb(0, 198, 0); // Primary Dark
+  }
+
+  &:disabled {
+    background-color: rgb(183, 183, 183); // Disabled
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    background-color: rgb(0, 72, 0); // Primary Dark
+  }
+}
+
+.rfm-app-line{
+  border-bottom: 0.5px solid rgb(0, 142, 0);
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

@@ -4,9 +4,11 @@
     width: 200px;
     height: 100vh;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    background-color: rgb(240, 240, 240);
 }
 
 .vertical-toolbar .title {
+    color: rgb(11, 104, 11);
     font-size: 24px;
     padding: 30px 20px 20px 20px;
 }
@@ -26,12 +28,17 @@
     transition: color 0.3s;
 }
 
+.vertical-toolbar .nav-links a.active-link {
+    background-color: rgb(200, 230, 201);
+}
 
 .nav-links a:hover {
+    color: rgb(0, 72, 0);
 }
 
 .menu-icon {
     margin-right: 8px;
+    color: rgb(0, 128, 0); 
 }
 
 .spacer-between-title-nav {
