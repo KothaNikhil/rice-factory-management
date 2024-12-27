@@ -11,10 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB connection (for MongoDB, you can replace with your database connection string)
-mongoose.connect('mongodb://localhost:27017/rice-factory', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://localhost:27017/rice-factory');
 
 // Check DB connection
 mongoose.connection.on('connected', () => {
