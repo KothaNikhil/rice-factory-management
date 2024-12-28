@@ -25,7 +25,6 @@ export class TransactionService {
 
   // Add a new transaction
   addTransaction(transaction: Transaction): Observable<Transaction> {
-    console.log('Adding transaction:', transaction);
     return this.http.post<Transaction>(this.apiUrl, transaction).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
@@ -33,7 +32,6 @@ export class TransactionService {
       }),
       tap((newTransaction) => {
         this.transactionAddedSource.next(newTransaction);
-        console.log('Transaction added successfully:', newTransaction);
       })
     );
   }

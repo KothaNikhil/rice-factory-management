@@ -54,20 +54,16 @@ export class TransactionsFormComponent {
     this.transaction.dateCreated = currentDate;
     this.transaction.dateUpdated = currentDate;
 
-    console.log('Transaction to be added:', this.transaction);
-    this.transactionService.addTransaction(this.transaction).subscribe(
-      (response) => {
-        console.log('Transaction added successfully:', response);
-  
-        // Reset the form
+    this.transactionService.addTransaction(this.transaction).subscribe({
+      next: () => {
         if (this.transactionForm) {
           this.transactionForm.reset();
         }
       },
-      (error) => {
+      error: (error) => {
         console.error('Error adding transaction:', error);
       }
-    );
+    });
   }
 
   LogTransactions() {
