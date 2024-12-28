@@ -25,6 +25,8 @@ const transactionSchema = new mongoose.Schema({
   item: { type: String, required: true },
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
+  dateCreated: { type: Date, default: '', required: true },
+  dateUpdated: { type: Date, default: '', required: true },
 });
 
 const Transaction = mongoose.model('Transaction', transactionSchema);
@@ -33,9 +35,11 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 
 // Add transaction (POST)
 app.post('/api/transactions', async (req, res) => {
-  const { transactionType, name, item, quantity, price } = req.body;
+  console.log('POST /api/transactions');
+  console.log(req.body);
+  const { transactionType, name, item, quantity, price, dateCreated, dateUpdated } = req.body;
   try {
-    const newTransaction = new Transaction({ transactionType, name, item, quantity, price });
+    const newTransaction = new Transaction({ transactionType, name, item, quantity, price, dateCreated, dateUpdated });
     await newTransaction.save();
     res.status(201).json(newTransaction);
   } catch (error) {

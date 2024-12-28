@@ -8,6 +8,7 @@ import { TransactionsFormComponent } from './transactions-form/transactions-form
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { TransactionsTableComponent } from './transactions-table/transactions-table.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TransactionsTableComponent } from './transactions-table/transactions-ta
     FormsModule,
     MatTableModule,
     MatSortModule,
+    MatProgressBarModule
   ]
 })
 export class TransactionsModule { }

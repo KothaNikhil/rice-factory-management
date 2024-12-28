@@ -23,6 +23,8 @@ export class TransactionsFormComponent {
     item: null,
     quantity: null,
     price: null,
+    dateCreated: null,
+    dateUpdated: null,
   };
 
   constructor(private transactionService: TransactionService) { }
@@ -48,6 +50,11 @@ export class TransactionsFormComponent {
   }
 
   onSubmit() {
+    const currentDate = new Date();
+    this.transaction.dateCreated = currentDate;
+    this.transaction.dateUpdated = currentDate;
+
+    console.log('Transaction to be added:', this.transaction);
     this.transactionService.addTransaction(this.transaction).subscribe(
       (response) => {
         console.log('Transaction added successfully:', response);

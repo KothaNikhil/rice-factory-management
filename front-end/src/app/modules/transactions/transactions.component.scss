@@ -5,11 +5,11 @@
 .transactions-form {
   width: 400px;
   padding-right: 15px;
-  border-right: 1px solid #ccc;
 }
 
 .transactions-table {
   // Ensure the table takes up the remaining space
   flex: 1;
   padding-left: 15px;
+  border-left: 1px solid #ccc;
 }
