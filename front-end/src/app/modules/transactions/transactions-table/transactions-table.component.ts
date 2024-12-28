@@ -36,6 +36,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
             default: return item[property];
           }
         };
+        this.sort.sort({ id: 'dateCreated', start: 'desc', disableClear: true });
         this.isLoading = false;
       },
       error => {

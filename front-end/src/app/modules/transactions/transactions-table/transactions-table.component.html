@@ -1,4 +1,5 @@
 <div>
+  <p class="table-title">Recent transactions:-</p>
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
     <ng-container matColumnDef="transactionType">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Transaction type </th>
