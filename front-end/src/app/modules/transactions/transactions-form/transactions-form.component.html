@@ -55,5 +55,5 @@
   </div>
 
   <!-- Submit Button -->
-  <button type="submit" [disabled]="!transactionForm.valid">Add Transaction</button>
+  <button type="submit" [disabled]="!transactionForm.valid">{{ isEditMode ? 'Update Transaction' : 'Add Transaction' }}</button>
 </form>

@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   standalone: false
 })
 export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
-  displayedColumns: string[] = ['transactionType', 'name', 'item', 'quantity', 'price', 'dateCreated', 'dateUpdated'];
+  displayedColumns: string[] = ['update','transactionType', 'name', 'item', 'quantity', 'price', 'dateCreated', 'dateUpdated'];
   dataSource = new MatTableDataSource<any>();
   isLoading = true;
   private _liveAnnouncer = inject(LiveAnnouncer);
@@ -52,5 +52,9 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
+  }
+
+  editTransaction(transaction: any) {
+    this.transactionService.editTransaction(transaction);
   }
 }

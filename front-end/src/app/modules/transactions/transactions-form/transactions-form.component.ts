@@ -28,8 +28,19 @@ export class TransactionsFormComponent {
   };
 
   currentDateTime: string = new Date().toISOString().slice(0, 16); // Add this line
+  isEditMode = false;
 
-  constructor(private transactionService: TransactionService) { }
+  constructor(private transactionService: TransactionService) {
+    this.transactionService.editTransaction$.subscribe(transaction => {
+      this.transaction = { ...transaction };
+      this.isEditMode = true;
+    });
+  }
+
+  getCategoryByItem(itemName: string | null) {
+    if (!itemName) return null;
+    return this.categories.find(category => category.items.some(item => item.name === itemName));
+  }
 
   onCategoryChange(event: any) {
     const categoryId = +event.target.value;
@@ -52,17 +63,33 @@ export class TransactionsFormComponent {
   }
 
   onSubmit() {
-    this.transaction.dateUpdated = this.transaction.dateCreated;
-
-    this.transactionService.addTransaction(this.transaction).subscribe({
-      next: () => {
-        if (this.transactionForm) {
-          this.transactionForm.reset();
+    if (this.isEditMode) {
+      this.transactionService.updateTransaction(this.transaction).subscribe({
+        next: () => {
+          this.resetForm();
+        },
+        error: (error) => {
+          console.error('Error updating transaction:', error);
         }
-      },
-      error: (error) => {
-        console.error('Error adding transaction:', error);
-      }
-    });
+      });
+    } else {
+      this.transaction.dateUpdated = this.transaction.dateCreated;
+
+      this.transactionService.addTransaction(this.transaction).subscribe({
+        next: () => {
+          this.resetForm();
+        },
+        error: (error) => {
+          console.error('Error adding transaction:', error);
+        }
+      });
+    }
+  }
+
+  resetForm() {
+    if (this.transactionForm) {
+      this.transactionForm.reset();
+    }
+    this.isEditMode = false;
   }
 }

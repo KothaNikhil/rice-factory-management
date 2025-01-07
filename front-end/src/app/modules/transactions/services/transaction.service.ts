@@ -4,6 +4,7 @@ import { catchError, Observable, throwError, Subject, tap } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 export interface Transaction {
+  id?: number; // Add this line
   transactionType: string;
   name: string;
   item: string | null;
@@ -20,6 +21,8 @@ export class TransactionService {
   private apiUrl = 'http://localhost:5000/api/transactions';
   private transactionAddedSource = new Subject<Transaction>();
   transactionAdded$ = this.transactionAddedSource.asObservable();
+  private editTransactionSource = new Subject<Transaction>();
+  editTransaction$ = this.editTransactionSource.asObservable();
 
   constructor(private http: HttpClient) {
     this.getTransactions();
@@ -51,4 +54,21 @@ export class TransactionService {
       })
     ).subscribe();
   }
+
+  editTransaction(transaction: Transaction) {
+    this.editTransactionSource.next(transaction);
+  }
+
+  updateTransaction(transaction: Transaction): Observable<Transaction> {
+    return this.http.put<Transaction>(`${this.apiUrl}/${transaction.id}`, transaction).pipe(
+      catchError((error) => {
+        console.error('Error occurred:', error);
+        return throwError(() => new Error('Failed to update transaction'));
+      }),
+      tap((updatedTransaction) => {
+        this.transactionAddedSource.next(updatedTransaction);
+      })
+    );
+  }
+
 }
