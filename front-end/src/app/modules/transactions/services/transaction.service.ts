@@ -22,7 +22,6 @@ export class TransactionService {
   transactionAdded$ = this.transactionAddedSource.asObservable();
 
   constructor(private http: HttpClient) {
-    console.log('Transaction service initialized');
     this.getTransactions();
   }
 

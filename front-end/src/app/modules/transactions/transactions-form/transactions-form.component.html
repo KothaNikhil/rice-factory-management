@@ -39,6 +39,12 @@
     </div>
   </div>
 
+  <!-- Date and Time -->
+  <div class="form-group">
+    <label for="transactionDate">Transaction Date and Time</label>
+    <input id="transactionDate" name="transactionDate" type="datetime-local" [(ngModel)]="transaction.dateCreated" [max]="currentDateTime" required />
+  </div>
+
   <!-- Price -->
   <div class="form-group">
     <label for="price">Price</label>
@@ -50,5 +56,4 @@
 
   <!-- Submit Button -->
   <button type="submit" [disabled]="!transactionForm.valid">Add Transaction</button>
-  <!-- <button type="button" (click)="LogTransactions()">Get Transactions</button> -->
 </form>

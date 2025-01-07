@@ -27,6 +27,8 @@ export class TransactionsFormComponent {
     dateUpdated: null,
   };
 
+  currentDateTime: string = new Date().toISOString().slice(0, 16); // Add this line
+
   constructor(private transactionService: TransactionService) { }
 
   onCategoryChange(event: any) {
@@ -50,9 +52,7 @@ export class TransactionsFormComponent {
   }
 
   onSubmit() {
-    const currentDate = new Date();
-    this.transaction.dateCreated = currentDate;
-    this.transaction.dateUpdated = currentDate;
+    this.transaction.dateUpdated = this.transaction.dateCreated;
 
     this.transactionService.addTransaction(this.transaction).subscribe({
       next: () => {
@@ -65,16 +65,4 @@ export class TransactionsFormComponent {
       }
     });
   }
-
-  LogTransactions() {
-    // this.transactionService.getTransactions().subscribe({
-    //   next: (transactions) => {
-    //     console.log('Transactions fetched:', transactions);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error fetching transactions:', error);
-    //   }
-    // });
-  }
-
 }
