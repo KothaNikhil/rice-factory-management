@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError, Subject, tap } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 export interface Transaction {
   id?: number; // Add this line

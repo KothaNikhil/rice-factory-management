@@ -13,7 +13,7 @@ export class TransactionsFormComponent {
   @ViewChild('transactionForm') transactionForm: NgForm | undefined;
   
   categories = CATEGORIES; // Assume CATEGORIES is imported
-  selectedCategory = null;
+  selectedCategory: number | null = null;
   selectedItemUnit = '';
   filteredItems: { id: number; name: string; quantity: number; unit: string; }[] | undefined;
 
@@ -32,7 +32,13 @@ export class TransactionsFormComponent {
 
   constructor(private transactionService: TransactionService) {
     this.transactionService.editTransaction$.subscribe(transaction => {
+      console.log('Editing transaction:', transaction);
       this.transaction = { ...transaction };
+      this.transaction.dateCreated = transaction.dateCreated ? new Date(transaction.dateCreated) : null;
+      this.selectedCategory = this.getCategoryByItem(transaction.item)?.id ?? null;
+      this.filteredItems = this.getCategoryByItem(transaction.item)?.items ?? [];
+      this.transaction.item = this.getItemByName(transaction.item).name;
+      this.selectedItemUnit = this.getItemByName(transaction.item)?.unit || '';
       this.isEditMode = true;
     });
   }
@@ -40,6 +46,17 @@ export class TransactionsFormComponent {
   getCategoryByItem(itemName: string | null) {
     if (!itemName) return null;
     return this.categories.find(category => category.items.some(item => item.name === itemName));
+  }
+  getItemByName(itemName: string | null): any {
+    if (!itemName) return null;
+    for (const category of this.categories) {
+      const item = category.items.find(item => item.name === itemName);
+      console.log('Item:', item);
+      if (item) {
+        return item;
+      }
+    }
+    return null;
   }
 
   onCategoryChange(event: any) {
