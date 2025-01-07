@@ -54,6 +54,7 @@
     </div>
   </div>
 
-  <!-- Submit Button -->
+  <!-- Submit and Cancel Buttons -->
+  <button type="button" *ngIf="isEditMode" (click)="cancelEdit()">Cancel</button>
   <button type="submit" [disabled]="!transactionForm.valid">{{ isEditMode ? 'Update Transaction' : 'Add Transaction' }}</button>
 </form>

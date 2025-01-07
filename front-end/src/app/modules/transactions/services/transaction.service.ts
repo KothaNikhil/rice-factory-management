@@ -9,8 +9,8 @@ export interface Transaction {
   item: string | null;
   quantity: number | null;
   price: number | null;
-  dateCreated: Date | null;
-  dateUpdated: Date | null;
+  dateCreated: string | null; // Change to string
+  dateUpdated: string | null; // Change to string
 }
 
 @Injectable({

@@ -34,7 +34,7 @@ export class TransactionsFormComponent {
     this.transactionService.editTransaction$.subscribe(transaction => {
       console.log('Editing transaction:', transaction);
       this.transaction = { ...transaction };
-      this.transaction.dateCreated = transaction.dateCreated ? new Date(transaction.dateCreated) : null;
+      this.transaction.dateCreated = transaction.dateCreated ? this.adjustTimeZone(new Date(transaction.dateCreated)).toISOString().slice(0, 16) : null;
       this.selectedCategory = this.getCategoryByItem(transaction.item)?.id ?? null;
       this.filteredItems = this.getCategoryByItem(transaction.item)?.items ?? [];
       this.transaction.item = this.getItemByName(transaction.item).name;
@@ -43,15 +43,20 @@ export class TransactionsFormComponent {
     });
   }
 
+  adjustTimeZone(date: Date): Date {
+    const timeZoneOffset = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() - timeZoneOffset);
+  }
+
   getCategoryByItem(itemName: string | null) {
     if (!itemName) return null;
     return this.categories.find(category => category.items.some(item => item.name === itemName));
   }
+
   getItemByName(itemName: string | null): any {
     if (!itemName) return null;
     for (const category of this.categories) {
       const item = category.items.find(item => item.name === itemName);
-      console.log('Item:', item);
       if (item) {
         return item;
       }
@@ -89,7 +94,8 @@ export class TransactionsFormComponent {
           console.error('Error updating transaction:', error);
         }
       });
-    } else {
+    } 
+    else {
       this.transaction.dateUpdated = this.transaction.dateCreated;
 
       this.transactionService.addTransaction(this.transaction).subscribe({
@@ -101,6 +107,10 @@ export class TransactionsFormComponent {
         }
       });
     }
+  }
+
+  cancelEdit() {
+    this.resetForm();
   }
 
   resetForm() {
