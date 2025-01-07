@@ -21,7 +21,10 @@ export class TransactionService {
   private transactionAddedSource = new Subject<Transaction>();
   transactionAdded$ = this.transactionAddedSource.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log('Transaction service initialized');
+    this.getTransactions();
+  }
 
   // Add a new transaction
   addTransaction(transaction: Transaction): Observable<Transaction> {
@@ -36,8 +39,17 @@ export class TransactionService {
     );
   }
 
-  getTransactions(): Observable<Transaction[]> {
-    // return this.http.get<Transaction[]>(this.apiUrl).pipe(delay(2000));
-    return this.http.get<Transaction[]>(this.apiUrl);
+  getTransactions(): void {
+    this.http.get<Transaction[]>(this.apiUrl).pipe(
+      tap((transactionsList) => {
+        transactionsList.forEach((transaction) => {
+          this.transactionAddedSource.next(transaction);
+        });
+      }),
+      catchError((error) => {
+        console.error('Error occurred:', error);
+        return throwError(() => new Error('Failed to fetch transactions'));
+      })
+    ).subscribe();
   }
 }

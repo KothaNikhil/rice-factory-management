@@ -67,14 +67,14 @@ export class TransactionsFormComponent {
   }
 
   LogTransactions() {
-    this.transactionService.getTransactions().subscribe({
-      next: (transactions) => {
-        console.log('Transactions fetched:', transactions);
-      },
-      error: (error) => {
-        console.error('Error fetching transactions:', error);
-      }
-    });
+    // this.transactionService.getTransactions().subscribe({
+    //   next: (transactions) => {
+    //     console.log('Transactions fetched:', transactions);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error fetching transactions:', error);
+    //   }
+    // });
   }
 
 }

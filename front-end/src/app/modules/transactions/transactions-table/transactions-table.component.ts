@@ -22,32 +22,22 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   constructor(private transactionService: TransactionService) { }
 
   ngAfterViewInit(): void {
-    this.transactionSubscription = this.transactionService.getTransactions().subscribe(
-      transactions => {
-        this.dataSource.data = transactions;
-        this.dataSource.sort = this.sort;
-        this.dataSource.sortingDataAccessor = (item, property) => {
-          switch (property) {
-            case 'transactiontype': return item.transactionType;
-            case 'name': return item.name.toLowerCase();
-            case 'item': return item.item.toLowerCase();
-            case 'dateCreated': return new Date(item.dateCreated);
-            case 'dateUpdated': return new Date(item.dateUpdated);
-            default: return item[property];
-          }
-        };
-        this.sort.sort({ id: 'dateCreated', start: 'desc', disableClear: true });
-        this.isLoading = false;
-      },
-      error => {
-        console.error('Error fetching transactions', error);
-        this.isLoading = false;
-      }
-    );
-
     this.transactionService.transactionAdded$.subscribe(transaction => {
       this.dataSource.data = [...this.dataSource.data, transaction];
     });
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'transactiontype': return item.transactionType;
+        case 'name': return item.name.toLowerCase();
+        case 'item': return item.item.toLowerCase();
+        case 'dateCreated': return new Date(item.dateCreated);
+        case 'dateUpdated': return new Date(item.dateUpdated);
+        default: return item[property];
+      }
+    };
+    this.sort.sort({ id: 'dateCreated', start: 'desc', disableClear: true });
+    this.isLoading = false;
   }
 
   ngOnDestroy(): void {
