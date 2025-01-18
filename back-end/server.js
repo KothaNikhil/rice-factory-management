@@ -60,6 +60,17 @@ app.get('/api/transactions', async (req, res) => {
   }
 });
 
+// Get all transaction names (GET)
+app.get('/api/transactions/names', async (req, res) => {
+  try {
+    const transactions = await Transaction.find().select('name -_id');
+    const names = transactions.map(transaction => transaction.name);
+    res.status(200).json(names);
+  } catch (error) {
+    res.status(400).json({ message: 'Error fetching transaction names', error });
+  }
+});
+
 // Get transaction by ID (GET)
 app.get('/api/transactions/:id', async (req, res) => {
   const { id } = req.params;

@@ -9,7 +9,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { TransactionsTableComponent } from './transactions-table/transactions-table.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
     MatTableModule,
     MatSortModule,
     MatProgressBarModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule
   ]
 })
 export class TransactionsModule { }

@@ -11,7 +11,12 @@
   <!-- Name -->
   <div class="form-group">
     <label for="name">Name</label>
-    <input id="name" name="name" type="text" [(ngModel)]="transaction.name" placeholder="Enter transaction name" required />
+    <input id="name" name="name" type="text" [(ngModel)]="transaction.name" placeholder="Enter transaction name" required (input)="onNameInput($event)" [matAutocomplete]="auto" />
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let name of filteredNames" [value]="name">
+        {{ name }}
+      </mat-option>
+    </mat-autocomplete>
   </div>
 
   <!-- Category -->

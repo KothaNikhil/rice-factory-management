@@ -55,6 +55,15 @@ export class TransactionService {
     );
   }
 
+  getTransactionNames(): Observable<string[]> { // Add this method
+    return this.http.get<string[]>(`${this.apiUrl}/names`).pipe(
+      catchError((error) => {
+        console.error('Error occurred:', error);
+        return throwError(() => new Error('Failed to fetch transaction names'));
+      })
+    );
+  }
+
   editTransaction(transaction: Transaction) {
     this.editTransactionSource.next(transaction);
   }
@@ -71,13 +80,11 @@ export class TransactionService {
     );
   }
 
-  deleteTransaction(id: string): Observable<void> { // Add this method
+  deleteTransaction(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
         return throwError(() => new Error('Failed to delete transaction'));
-      }),
-      tap(() => {
       })
     );
   }

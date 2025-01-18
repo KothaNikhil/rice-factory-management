@@ -2,12 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 import { CATEGORIES } from 'src/app/shared/constants/predefined-items';
 import { NgForm } from '@angular/forms';
 import { Transaction, TransactionService } from '../services/transaction.service';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-transactions-form',
-    templateUrl: './transactions-form.component.html',
-    styleUrls: ['./transactions-form.component.scss'],
-    standalone: false
+  selector: 'app-transactions-form',
+  templateUrl: './transactions-form.component.html',
+  styleUrls: ['./transactions-form.component.scss'],
+  standalone: false
 })
 export class TransactionsFormComponent {
   @ViewChild('transactionForm') transactionForm: NgForm | undefined;
@@ -16,6 +18,7 @@ export class TransactionsFormComponent {
   selectedCategory: number | null = null;
   selectedItemUnit = '';
   filteredItems: { id: number; name: string; quantity: number; unit: string; }[] | undefined;
+  filteredNames: string[] = []; // Add this line
 
   transaction: Transaction = {
     transactionType: '',
@@ -82,6 +85,14 @@ export class TransactionsFormComponent {
   onItemChange(event: any) {
     const itemName = event.target.value;
     this.selectedItemUnit = this.filteredItems?.find(item => item.name === itemName)?.unit || '';
+  }
+
+  onNameInput(event: any) {
+    const inputValue = event.target.value.toLowerCase();
+    this.transactionService.getTransactionNames().subscribe(names => {
+      console.log('Names:', names);
+      this.filteredNames = names.filter(name => name.toLowerCase().includes(inputValue));
+    });
   }
 
   onSubmit() {
