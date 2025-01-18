@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError, Subject, tap } from 'rxjs';
 
@@ -24,7 +24,7 @@ export class TransactionService {
   editTransaction$ = this.editTransactionSource.asObservable();
 
   constructor(private http: HttpClient) {
-    this.getTransactions();
+    this.getTransactions(1, 10);
   }
 
   // Add a new transaction
@@ -40,18 +40,17 @@ export class TransactionService {
     );
   }
 
-  getTransactions(): void {
-    this.http.get<Transaction[]>(this.apiUrl).pipe(
-      tap((transactionsList) => {
-        transactionsList.forEach((transaction) => {
-          this.transactionAddedSource.next(transaction);
-        });
-      }),
+  getTransactions(page: number, pageSize: number): Observable<Transaction[]> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    return this.http.get<Transaction[]>(this.apiUrl, { params }).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
         return throwError(() => new Error('Failed to fetch transactions'));
       })
-    ).subscribe();
+    );
   }
 
   editTransaction(transaction: Transaction) {

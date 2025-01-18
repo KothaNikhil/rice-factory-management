@@ -17,5 +17,14 @@ button[mat-icon-button] {
 }
 
 button[mat-icon-button].editing {
-  background-color: rgb(255, 193, 7); // Change to desired color
+  background-color: rgb(169 206 147); // Change to desired color
+}
+
+.table-container {
+  height: calc(100vh - 200px); // Adjust 200px based on your header/footer height
+  overflow-y: auto;
+}
+
+.progress-bar{
+  width: 100%;
 }

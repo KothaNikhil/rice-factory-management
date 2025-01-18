@@ -18,26 +18,28 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   private _liveAnnouncer = inject(LiveAnnouncer);
   @ViewChild(MatSort) sort!: MatSort;
   private transactionSubscription!: Subscription;
+  private page = 0;
+  private pageSize = 16;
 
   constructor(private transactionService: TransactionService) { }
 
   ngAfterViewInit(): void {
-    this.transactionService.transactionAdded$.subscribe(transaction => {
-      this.dataSource.data = [...this.dataSource.data, transaction];
-    });
-    this.dataSource.sort = this.sort;
-    this.dataSource.sortingDataAccessor = (item, property) => {
-      switch (property) {
-        case 'transactiontype': return item.transactionType;
-        case 'name': return item.name.toLowerCase();
-        case 'item': return item.item.toLowerCase();
-        case 'dateCreated': return new Date(item.dateCreated);
-        case 'dateUpdated': return new Date(item.dateUpdated);
-        default: return item[property];
-      }
-    };
-    this.sort.sort({ id: 'dateCreated', start: 'desc', disableClear: true });
-    this.isLoading = false;
+  this.loadTransactions();
+  this.transactionService.transactionAdded$.subscribe(transaction => {
+    this.dataSource.data = [...this.dataSource.data, transaction];
+  });
+  this.dataSource.sort = this.sort;
+  this.dataSource.sortingDataAccessor = (item, property) => {
+    switch (property) {
+      case 'transactiontype': return item.transactionType;
+      case 'name': return item.name.toLowerCase();
+      case 'item': return item.item.toLowerCase();
+      case 'dateCreated': return new Date(item.dateCreated);
+      case 'dateUpdated': return new Date(item.dateUpdated);
+      default: return item[property];
+    }
+  };
+  this.sort.sort({ id: 'dateCreated', start: 'desc', disableClear: true });
   }
 
   ngOnDestroy(): void {
@@ -56,5 +58,25 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
 
   editTransaction(transaction: any) {
     this.transactionService.editTransaction(transaction);
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  onScroll(event: any) {
+    const tableContainer = event.target;
+    if (tableContainer.scrollTop + tableContainer.clientHeight >= tableContainer.scrollHeight) {
+      this.loadTransactions();
+    }
+  }
+
+  private loadTransactions() {
+    this.isLoading = true;
+    this.transactionService.getTransactions(this.page, this.pageSize).subscribe(transactions => {
+      this.dataSource.data = [...this.dataSource.data, ...transactions];
+      this.page++;
+      this.isLoading = false;
+    });
   }
 }

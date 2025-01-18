@@ -49,8 +49,12 @@ app.post('/api/transactions', async (req, res) => {
 
 // Get all transactions (GET)
 app.get('/api/transactions', async (req, res) => {
+  const { page = 0, pageSize = 10 } = req.query;
+  const skip = parseInt(page) * parseInt(pageSize);
+  const limit = parseInt(pageSize);
+
   try {
-    const transactions = await Transaction.find();
+    const transactions = await Transaction.find().skip(skip).limit(limit);
     res.status(200).json(transactions);
   } catch (error) {
     res.status(400).json({ message: 'Error fetching transactions', error });
