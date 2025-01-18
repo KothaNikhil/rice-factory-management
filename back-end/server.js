@@ -88,11 +88,11 @@ app.get('/api/transactions/:id', async (req, res) => {
 // Update transaction (PUT)
 app.put('/api/transactions/:id', async (req, res) => {
   const { id } = req.params;
-  const { transactionType, name, item, quantity, price, dateUpdated } = req.body;
+  const { transactionType, name, item, quantity, price, dateCreated, dateUpdated } = req.body;
   try {
     const updatedTransaction = await Transaction.findByIdAndUpdate(
       id,
-      { transactionType, name, item, quantity, price, dateUpdated },
+      { transactionType, name, item, quantity, price, dateCreated, dateUpdated },
       { new: true, runValidators: true }
     );
     if (!updatedTransaction) {
