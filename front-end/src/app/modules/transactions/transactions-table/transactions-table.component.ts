@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   standalone: false
 })
 export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
-  displayedColumns: string[] = ['update','transactionType', 'name', 'item', 'quantity', 'price', 'dateCreated', 'dateUpdated'];
+  displayedColumns: string[] = ['update','transactionType', 'name', 'item', 'quantity', 'price', 'dateCreated', 'dateUpdated', 'delete'];
   dataSource = new MatTableDataSource<any>();
   isLoading = true;
   private _liveAnnouncer = inject(LiveAnnouncer);
@@ -26,6 +26,11 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.loadTransactions();
     this.transactionService.transactionAdded$.subscribe(transaction => {
+      console.log('Transaction added:', transaction);
+      this.refreshTable();
+    });
+    this.transactionService.transactionUpdated$.subscribe(transaction => {
+      console.log('Transaction updated:', transaction);
       this.refreshTable();
     });
     this.dataSource.sort = this.sort;
@@ -60,6 +65,17 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
     this.transactionService.editTransaction(transaction);
   }
 
+  deleteTransaction(transaction: any) {
+    this.transactionService.deleteTransaction(transaction._id).subscribe({
+      next: () => {
+        this.refreshTable();
+      },
+      error: (error) => {
+        console.error('Error deleting transaction:', error);
+      }
+    });
+  }
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -67,6 +83,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   onScroll(event: any) {
     const tableContainer = event.target;
     if (tableContainer.scrollTop + tableContainer.clientHeight >= tableContainer.scrollHeight) {
+      console.log('End of table');
       this.loadTransactions();
     }
   }
@@ -74,6 +91,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   private loadTransactions() {
     this.isLoading = true;
     this.transactionService.getTransactions(this.page, this.pageSize).subscribe(transactions => {
+      console.log('Transactions:', transactions);
       this.dataSource.data = [...this.dataSource.data, ...transactions];
       this.page++;
       this.isLoading = false;

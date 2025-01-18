@@ -35,7 +35,6 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 
 // Add transaction (POST)
 app.post('/api/transactions', async (req, res) => {
-  console.log('POST /api/transactions');
   console.log(req.body);
   const { transactionType, name, item, quantity, price, dateCreated, dateUpdated } = req.body;
   try {
@@ -63,7 +62,6 @@ app.get('/api/transactions', async (req, res) => {
 
 // Get transaction by ID (GET)
 app.get('/api/transactions/:id', async (req, res) => {
-  console.log('GET /api/transactions/:id');
   const { id } = req.params;
   try {
     const transaction = await Transaction.findById(id);
@@ -92,6 +90,20 @@ app.put('/api/transactions/:id', async (req, res) => {
     res.status(200).json(updatedTransaction);
   } catch (error) {
     res.status(400).json({ message: 'Error updating transaction', error });
+  }
+});
+
+// Delete transaction (DELETE)
+app.delete('/api/transactions/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedTransaction = await Transaction.findByIdAndDelete(id);
+    if (!deletedTransaction) {
+      return res.status(404).json({ message: 'Transaction not found' });
+    }
+    res.status(200).json({ message: 'Transaction deleted successfully' });
+  } catch (error) {
+    res.status(400).json({ message: 'Error deleting transaction', error });
   }
 });
 

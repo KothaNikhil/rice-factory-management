@@ -20,6 +20,8 @@ export class TransactionService {
   private apiUrl = 'http://localhost:5000/api/transactions';
   private transactionAddedSource = new Subject<Transaction>();
   transactionAdded$ = this.transactionAddedSource.asObservable();
+  private transactionUpdatedSource = new Subject<Transaction>();
+  transactionUpdated$ = this.transactionUpdatedSource.asObservable();
   private editTransactionSource = new Subject<Transaction>();
   editTransaction$ = this.editTransactionSource.asObservable();
 
@@ -64,7 +66,18 @@ export class TransactionService {
         return throwError(() => new Error('Failed to update transaction'));
       }),
       tap((updatedTransaction) => {
-        this.transactionAddedSource.next(updatedTransaction);
+        this.transactionUpdatedSource.next(updatedTransaction);
+      })
+    );
+  }
+
+  deleteTransaction(id: string): Observable<void> { // Add this method
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      catchError((error) => {
+        console.error('Error occurred:', error);
+        return throwError(() => new Error('Failed to delete transaction'));
+      }),
+      tap(() => {
       })
     );
   }
