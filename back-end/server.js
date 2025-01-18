@@ -36,7 +36,7 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 // Add transaction (POST)
 app.post('/api/transactions', async (req, res) => {
   console.log(req.body);
-  const { transactionType, name, item, quantity, price, dateCreated } = req.body;
+  const { transactionType, name, item, quantity, price, dateCreated, dateUpdated } = req.body;
   try {
     const transaction = new Transaction();
     transaction.transactionType = transactionType;
@@ -45,7 +45,7 @@ app.post('/api/transactions', async (req, res) => {
     transaction.quantity = quantity;
     transaction.price = price;
     transaction.dateCreated = dateCreated;
-    transaction.dateUpdated.push(new Date().toISOString());
+    transaction.dateUpdated.push(dateUpdated);
     await transaction.save();
     res.status(201).json(transaction);
   } catch (error) {
@@ -71,7 +71,7 @@ app.get('/api/transactions', async (req, res) => {
 app.get('/api/transactions/names', async (req, res) => {
   try {
     const transactions = await Transaction.find().select('name -_id');
-    const names = transactions.map(transaction => transaction.name);
+    const names = [...new Set(transactions.map(transaction => transaction.name))];
     res.status(200).json(names);
   } catch (error) {
     res.status(400).json({ message: 'Error fetching transaction names', error });
@@ -95,7 +95,7 @@ app.get('/api/transactions/:id', async (req, res) => {
 // Update transaction (PUT)
 app.put('/api/transactions/:id', async (req, res) => {
   const { id } = req.params;
-  const { transactionType, name, item, quantity, price, dateCreated } = req.body;
+  const { transactionType, name, item, quantity, price, dateCreated, dateUpdated } = req.body;
   try {
     const transaction = await Transaction.findById(id);
     if (!transaction) {
@@ -107,7 +107,7 @@ app.put('/api/transactions/:id', async (req, res) => {
     transaction.quantity = quantity;
     transaction.price = price;
     transaction.dateCreated = dateCreated;
-    transaction.dateUpdated.push(new Date().toISOString());
+    transaction.dateUpdated.push(dateUpdated);
     await transaction.save();
     res.status(200).json(transaction);
   } catch (error) {

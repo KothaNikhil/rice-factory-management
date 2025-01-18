@@ -10,7 +10,7 @@ export interface Transaction {
   quantity: number | null;
   price: number | null;
   dateCreated: string | null; // Change to string
-  dateUpdated: string[] | null; // Change to array of strings
+  dateUpdated: Date[] | null; // Change to array of strings
 }
 
 @Injectable({

@@ -96,6 +96,7 @@ export class TransactionsFormComponent {
   }
 
   onSubmit() {
+    this.transaction.dateUpdated = [...(this.transaction.dateUpdated || []), new Date()];
     if (this.isEditMode) {
       this.transactionService.updateTransaction(this.transaction).subscribe({
         next: () => {
