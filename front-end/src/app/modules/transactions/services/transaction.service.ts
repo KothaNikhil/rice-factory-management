@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError, Subject, tap } from 'rxjs';
 
 export interface Transaction {
-  id?: number; // Add this line
+  _id?: string; // Change to string
   transactionType: string;
   name: string;
   item: string | null;
@@ -58,7 +58,7 @@ export class TransactionService {
   }
 
   updateTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.put<Transaction>(`${this.apiUrl}/${transaction.id}`, transaction).pipe(
+    return this.http.put<Transaction>(`${this.apiUrl}/${transaction._id}`, transaction).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
         return throwError(() => new Error('Failed to update transaction'));
@@ -68,5 +68,4 @@ export class TransactionService {
       })
     );
   }
-
 }

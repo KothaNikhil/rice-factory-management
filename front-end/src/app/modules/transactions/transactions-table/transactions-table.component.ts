@@ -24,22 +24,22 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   constructor(private transactionService: TransactionService) { }
 
   ngAfterViewInit(): void {
-  this.loadTransactions();
-  this.transactionService.transactionAdded$.subscribe(transaction => {
-    this.dataSource.data = [...this.dataSource.data, transaction];
-  });
-  this.dataSource.sort = this.sort;
-  this.dataSource.sortingDataAccessor = (item, property) => {
-    switch (property) {
-      case 'transactiontype': return item.transactionType;
-      case 'name': return item.name.toLowerCase();
-      case 'item': return item.item.toLowerCase();
-      case 'dateCreated': return new Date(item.dateCreated);
-      case 'dateUpdated': return new Date(item.dateUpdated);
-      default: return item[property];
-    }
-  };
-  this.sort.sort({ id: 'dateCreated', start: 'desc', disableClear: true });
+    this.loadTransactions();
+    this.transactionService.transactionAdded$.subscribe(transaction => {
+      this.refreshTable();
+    });
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'transactiontype': return item.transactionType;
+        case 'name': return item.name.toLowerCase();
+        case 'item': return item.item.toLowerCase();
+        case 'dateCreated': return new Date(item.dateCreated);
+        case 'dateUpdated': return new Date(item.dateUpdated);
+        default: return item[property];
+      }
+    };
+    this.sort.sort({ id: 'dateCreated', start: 'desc', disableClear: true });
   }
 
   ngOnDestroy(): void {
@@ -78,5 +78,11 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
       this.page++;
       this.isLoading = false;
     });
+  }
+
+  private refreshTable() {
+    this.page = 0;
+    this.dataSource.data = [];
+    this.loadTransactions();
   }
 }
