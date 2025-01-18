@@ -57,6 +57,40 @@ app.get('/api/transactions', async (req, res) => {
   }
 });
 
+// Get transaction by ID (GET)
+app.get('/api/transactions/:id', async (req, res) => {
+  console.log('GET /api/transactions/:id');
+  const { id } = req.params;
+  try {
+    const transaction = await Transaction.findById(id);
+    if (!transaction) {
+      return res.status(404).json({ message: 'Transaction not found' });
+    }
+    res.status(200).json(transaction);
+  } catch (error) {
+    res.status(400).json({ message: 'Error fetching transaction', error });
+  }
+});
+
+// Update transaction (PUT)
+app.put('/api/transactions/:id', async (req, res) => {
+  const { id } = req.params;
+  const { transactionType, name, item, quantity, price, dateUpdated } = req.body;
+  try {
+    const updatedTransaction = await Transaction.findByIdAndUpdate(
+      id,
+      { transactionType, name, item, quantity, price, dateUpdated },
+      { new: true, runValidators: true }
+    );
+    if (!updatedTransaction) {
+      return res.status(404).json({ message: 'Transaction not found' });
+    }
+    res.status(200).json(updatedTransaction);
+  } catch (error) {
+    res.status(400).json({ message: 'Error updating transaction', error });
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
