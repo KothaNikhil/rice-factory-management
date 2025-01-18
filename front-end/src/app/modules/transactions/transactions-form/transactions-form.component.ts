@@ -107,8 +107,6 @@ export class TransactionsFormComponent {
       });
     } 
     else {
-      this.transaction.dateUpdated = this.transaction.dateCreated;
-
       this.transactionService.addTransaction(this.transaction).subscribe({
         next: () => {
           this.resetForm();

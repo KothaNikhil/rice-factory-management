@@ -40,7 +40,7 @@
 
     <ng-container matColumnDef="dateUpdated">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date"> Date Updated </th>
-      <td mat-cell *matCellDef="let element"> {{element.dateUpdated | date:'short'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.dateUpdated[element.dateUpdated.length - 1] | date:'short'}} </td> <!-- Show latest date -->
     </ng-container>
     
     <ng-container matColumnDef="delete">

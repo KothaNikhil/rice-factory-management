@@ -26,7 +26,7 @@ const transactionSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
   dateCreated: { type: Date, default: '', required: true },
-  dateUpdated: { type: Date, default: '', required: true },
+  dateUpdated: { type: [Date], default: [], required: true },
 });
 
 const Transaction = mongoose.model('Transaction', transactionSchema);
@@ -36,11 +36,18 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 // Add transaction (POST)
 app.post('/api/transactions', async (req, res) => {
   console.log(req.body);
-  const { transactionType, name, item, quantity, price, dateCreated, dateUpdated } = req.body;
+  const { transactionType, name, item, quantity, price, dateCreated } = req.body;
   try {
-    const newTransaction = new Transaction({ transactionType, name, item, quantity, price, dateCreated, dateUpdated });
-    await newTransaction.save();
-    res.status(201).json(newTransaction);
+    const transaction = new Transaction();
+    transaction.transactionType = transactionType;
+    transaction.name = name;
+    transaction.item = item;
+    transaction.quantity = quantity;
+    transaction.price = price;
+    transaction.dateCreated = dateCreated;
+    transaction.dateUpdated.push(new Date().toISOString());
+    await transaction.save();
+    res.status(201).json(transaction);
   } catch (error) {
     res.status(400).json({ message: 'Error adding transaction', error });
   }
@@ -88,17 +95,21 @@ app.get('/api/transactions/:id', async (req, res) => {
 // Update transaction (PUT)
 app.put('/api/transactions/:id', async (req, res) => {
   const { id } = req.params;
-  const { transactionType, name, item, quantity, price, dateCreated, dateUpdated } = req.body;
+  const { transactionType, name, item, quantity, price, dateCreated } = req.body;
   try {
-    const updatedTransaction = await Transaction.findByIdAndUpdate(
-      id,
-      { transactionType, name, item, quantity, price, dateCreated, dateUpdated },
-      { new: true, runValidators: true }
-    );
-    if (!updatedTransaction) {
+    const transaction = await Transaction.findById(id);
+    if (!transaction) {
       return res.status(404).json({ message: 'Transaction not found' });
     }
-    res.status(200).json(updatedTransaction);
+    transaction.transactionType = transactionType;
+    transaction.name = name;
+    transaction.item = item;
+    transaction.quantity = quantity;
+    transaction.price = price;
+    transaction.dateCreated = dateCreated;
+    transaction.dateUpdated.push(new Date().toISOString());
+    await transaction.save();
+    res.status(200).json(transaction);
   } catch (error) {
     res.status(400).json({ message: 'Error updating transaction', error });
   }
