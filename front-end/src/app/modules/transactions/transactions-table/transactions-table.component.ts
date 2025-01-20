@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   standalone: false
 })
 export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
-  displayedColumns: string[] = ['update','transactionType', 'name', 'item', 'quantity', 'price', 'dateCreated', 'dateUpdated', 'delete'];
+  displayedColumns: string[] = ['update','transactionType', 'name', 'item', 'quantity', 'amount', 'dateCreated', 'dateUpdated', 'delete'];
   dataSource = new MatTableDataSource<any>();
   isLoading = true;
   private _liveAnnouncer = inject(LiveAnnouncer);
@@ -41,6 +41,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
         case 'item': return item.item.toLowerCase();
         case 'dateCreated': return new Date(item.dateCreated);
         case 'dateUpdated': return new Date(item.dateUpdated);
+        case 'amount': return item.amount;
         default: return item[property];
       }
     };
@@ -91,6 +92,12 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   private loadTransactions() {
     this.isLoading = true;
     this.transactionService.getTransactions(this.page, this.pageSize).subscribe(transactions => {
+      transactions.forEach(transaction => {
+        if (transaction.transactionType === 'purchase' || transaction.transactionType === 'sale') {
+          if(transaction.quantity && transaction.price){
+            transaction.amount = transaction.price * transaction.quantity;}
+        }
+      });
       console.log('Transactions:', transactions);
       this.dataSource.data = [...this.dataSource.data, ...transactions];
       this.page++;

@@ -20,11 +20,16 @@ mongoose.connection.on('connected', () => {
 
 // Define Transaction schema
 const transactionSchema = new mongoose.Schema({
-  transactionType: { type: String, required: true },
+  transactionType: { 
+    type: String, 
+    enum: ['purchase', 'sale', 'salary'], 
+    required: true 
+  },
   name: { type: String, required: true },
-  item: { type: String, required: true },
-  quantity: { type: Number, required: true },
-  price: { type: Number, required: true },
+  item: { type: String, required: function() { return this.transactionType !== 'salary'; } }, // Conditionally required
+  quantity: { type: Number, required: function() { return this.transactionType !== 'salary'; } }, // Conditionally required
+  price: { type: Number, required: function() { return this.transactionType !== 'salary'; } }, // Conditionally required
+  amount: { type: Number, required: function() { return this.transactionType === 'salary'; } }, // Conditionally required
   dateCreated: { type: Date, default: '', required: true },
   dateUpdated: { type: [Date], default: [], required: true },
 });
@@ -35,8 +40,7 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 
 // Add transaction (POST)
 app.post('/api/transactions', async (req, res) => {
-  console.log(req.body);
-  const { transactionType, name, item, quantity, price, dateCreated, dateUpdated } = req.body;
+  const { transactionType, name, item, quantity, price, amount, dateCreated, dateUpdated } = req.body;
   try {
     const transaction = new Transaction();
     transaction.transactionType = transactionType;
@@ -44,11 +48,13 @@ app.post('/api/transactions', async (req, res) => {
     transaction.item = item;
     transaction.quantity = quantity;
     transaction.price = price;
+    transaction.amount = amount;
     transaction.dateCreated = dateCreated;
-    transaction.dateUpdated.push(dateUpdated);
+    transaction.dateUpdated = dateUpdated;
     await transaction.save();
     res.status(201).json(transaction);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ message: 'Error adding transaction', error });
   }
 });
@@ -95,7 +101,7 @@ app.get('/api/transactions/:id', async (req, res) => {
 // Update transaction (PUT)
 app.put('/api/transactions/:id', async (req, res) => {
   const { id } = req.params;
-  const { transactionType, name, item, quantity, price, dateCreated, dateUpdated } = req.body;
+  const { transactionType, name, item, quantity, price, amount, dateCreated, dateUpdated } = req.body;
   try {
     const transaction = await Transaction.findById(id);
     if (!transaction) {
@@ -106,8 +112,9 @@ app.put('/api/transactions/:id', async (req, res) => {
     transaction.item = item;
     transaction.quantity = quantity;
     transaction.price = price;
+    transaction.amount = amount;
     transaction.dateCreated = dateCreated;
-    transaction.dateUpdated.push(dateUpdated);
+    transaction.dateUpdated = dateUpdated;
     await transaction.save();
     res.status(200).json(transaction);
   } catch (error) {

@@ -2,15 +2,22 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError, Subject, tap } from 'rxjs';
 
+export enum TransactionType {
+  Purchase = 'purchase',
+  Sale = 'sale',
+  Salary = 'salary'
+}
+
 export interface Transaction {
-  _id?: string; // Change to string
-  transactionType: string;
+  _id?: string;
+  transactionType: TransactionType;
   name: string;
   item: string | null;
   quantity: number | null;
   price: number | null;
-  dateCreated: string | null; // Change to string
-  dateUpdated: Date[] | null; // Change to array of strings
+  amount?: number | null; // Ensure this line is present
+  dateCreated: string | null;
+  dateUpdated: Date[] | null;
 }
 
 @Injectable({
@@ -55,7 +62,7 @@ export class TransactionService {
     );
   }
 
-  getTransactionNames(): Observable<string[]> { // Add this method
+  getTransactionNames(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/names`).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);

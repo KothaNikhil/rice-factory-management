@@ -1,9 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { CATEGORIES } from 'src/app/shared/constants/predefined-items';
 import { NgForm } from '@angular/forms';
-import { Transaction, TransactionService } from '../services/transaction.service';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Transaction, TransactionService, TransactionType } from '../services/transaction.service';
 
 @Component({
   selector: 'app-transactions-form',
@@ -21,7 +19,7 @@ export class TransactionsFormComponent {
   filteredNames: string[] = []; // Add this line
 
   transaction: Transaction = {
-    transactionType: '',
+    transactionType: TransactionType.Purchase,
     name: '',
     item: null,
     quantity: null,
@@ -29,6 +27,8 @@ export class TransactionsFormComponent {
     dateCreated: null,
     dateUpdated: null,
   };
+
+  TransactionType = TransactionType;
 
   currentDateTime: string = new Date().toISOString().slice(0, 16); // Add this line
   isEditMode = false;
