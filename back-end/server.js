@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const transactionRoutes = require('./routes/transactionRoutes');
+const firmRoutes = require('./routes/firmRoutes');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -21,6 +22,7 @@ mongoose.connection.on('connected', () => {
 
 // Routes
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/firms', firmRoutes);
 
 // Start the server
 app.listen(port, () => {
