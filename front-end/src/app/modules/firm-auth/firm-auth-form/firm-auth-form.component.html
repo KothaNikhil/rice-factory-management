@@ -1,38 +1,38 @@
-<div>
-  <button (click)="toggleMode()">{{ isLoginMode ? 'Switch to Register' : 'Switch to Login' }}</button>
-</div>
+  <form (ngSubmit)="onSubmit()" #firmAuthForm="ngForm">
+    <!-- Firm Name (only for registration) -->
+    <div class="form-group" *ngIf="!isLoginMode">
+      <label for="firmName">Firm Name</label>
+      <input id="firmName" name="firmName" type="text" [(ngModel)]="firm.name" placeholder="Enter firm name" required />
+    </div>
 
-<form (ngSubmit)="onSubmit()" #firmAuthForm="ngForm">
-  <!-- Firm Name (only for registration) -->
-  <div class="form-group" *ngIf="!isLoginMode">
-    <label for="firmName">Firm Name</label>
-    <input id="firmName" name="firmName" type="text" [(ngModel)]="firm.name" placeholder="Enter firm name" required />
-  </div>
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" [(ngModel)]="firm.email" placeholder="Enter email" required />
+    </div>
 
-  <!-- Email -->
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input id="email" name="email" type="email" [(ngModel)]="firm.email" placeholder="Enter email" required />
-  </div>
+    <!-- Mobile Number (only for registration) -->
+    <div class="form-group" *ngIf="!isLoginMode">
+      <label for="mobile">Mobile Number</label>
+      <input id="mobile" name="mobile" type="tel" [(ngModel)]="firm.phone" placeholder="Enter mobile number" required />
+    </div>
 
-  <!-- Mobile Number (only for registration) -->
-  <div class="form-group" *ngIf="!isLoginMode">
-    <label for="mobile">Mobile Number</label>
-    <input id="mobile" name="mobile" type="tel" [(ngModel)]="firm.phone" placeholder="Enter mobile number" required />
-  </div>
+    <!-- Password -->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" [(ngModel)]="firm.password" placeholder="Enter password" required />
+    </div>
 
-  <!-- Password -->
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input id="password" name="password" type="password" [(ngModel)]="firm.password" placeholder="Enter password" required />
-  </div>
+    <!-- Confirm Password (only for registration) -->
+    <div class="form-group" *ngIf="!isLoginMode">
+      <label for="confirmPassword">Confirm Password</label>
+      <input id="confirmPassword" name="confirmPassword" type="password" [(ngModel)]="confirmPassword" placeholder="Confirm password" required />
+    </div>
 
-  <!-- Confirm Password (only for registration) -->
-  <div class="form-group" *ngIf="!isLoginMode">
-    <label for="confirmPassword">Confirm Password</label>
-    <input id="confirmPassword" name="confirmPassword" type="password" [(ngModel)]="confirmPassword" placeholder="Confirm password" required />
-  </div>
-
-  <!-- Submit Button -->
-  <button type="submit" [disabled]="!firmAuthForm.valid">{{ isLoginMode ? 'Login' : 'Register' }}</button>
-</form>
+    <!-- Submit Button -->
+    <div class="submit-section">
+      <button type="submit" [disabled]="!firmAuthForm.valid">{{ isLoginMode ? 'Login' : 'Register' }}</button>
+      <p *ngIf="isLoginMode">Not registered? <a href="javascript:void(0)" (click)="toggleMode()">Register</a></p>
+      <p *ngIf="!isLoginMode">Already registered? <a href="javascript:void(0)" (click)="toggleMode()">Login</a></p>
+    </div>
+  </form>

@@ -1,4 +1,4 @@
-<div class="mat-app-background">
+<div class="mat-app-background" *ngIf="isAuthenticated; else authForm">
     <app-vertical-toolbar></app-vertical-toolbar>
     <div class="body">
         <app-top-menu></app-top-menu>
@@ -6,3 +6,6 @@
         <router-outlet class="content"></router-outlet>
     </div>
 </div>
+<ng-template #authForm>
+    <app-firm-auth-form class="mat-app-background firm-auth-form"></app-firm-auth-form>
+</ng-template>

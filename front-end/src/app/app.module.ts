@@ -15,11 +15,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { VerticalToolbarComponent } from './components/vertical-toolbar/vertical-toolbar.component';
 import { TopMenuComponent } from './components/top-menu/top-menu.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { FirmAuthFormComponent } from './modules/firm-auth/firm-auth-form/firm-auth-form.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    FirmAuthFormComponent,
     VerticalToolbarComponent,
     TopMenuComponent
   ],
@@ -33,6 +36,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatToolbarModule,
     MatMenuModule,
     MatIconModule,
+    FormsModule,
     HttpClientModule // Import HttpClientModule here
   ],
   providers: [
