@@ -1,4 +1,4 @@
-<div class="mat-app-background" *ngIf="isAuthenticated; else authForm">
+<div class="mat-app-background" *ngIf="authService.isAuthenticated(); else authForm">
     <app-vertical-toolbar></app-vertical-toolbar>
     <div class="body">
         <app-top-menu></app-top-menu>

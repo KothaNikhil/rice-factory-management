@@ -9,9 +9,9 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   title = 'rice-factory-management';
-  isAuthenticated = false;
+  // isAuthenticated = false;
 
-  constructor(private authService: AuthService) {
-    this.isAuthenticated = this.authService.isAuthenticated();
+  constructor(public authService: AuthService) {
+    // this.isAuthenticated = this.authService.isAuthenticated();
   }
 }

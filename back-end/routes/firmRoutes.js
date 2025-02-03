@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 
 // Register firm (POST)
 router.post('/register', async (req, res) => {
+  console.log(req.body);
   const { name, email, password, address, phone } = req.body;
   try {
     const firm = new Firm({ name, email, password, address, phone });
@@ -26,7 +27,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
     const token = jwt.sign({ id: firm._id }, 'secret', { expiresIn: '1h' });
-    res.status(200).json({ token });
+    res.status(200).json({ token }); // Return the token in the response
   } catch (error) {
     res.status(400).json({ message: 'Error logging in', error });
   }
