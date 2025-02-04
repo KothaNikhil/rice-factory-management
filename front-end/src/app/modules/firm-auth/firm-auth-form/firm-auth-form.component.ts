@@ -2,6 +2,13 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { API_ENDPOINTS, CONSTANTS, ERROR_MESSAGES, MESSAGES } from '../../../constants/constants';
+
+export enum FirmAuthFormMode {
+  Login = 'login',
+  Register = 'register',
+  Update = 'update'
+}
 
 @Component({
   selector: 'app-firm-auth-form',
@@ -10,47 +17,120 @@ import { CookieService } from 'ngx-cookie-service';
   standalone: false
 })
 export class FirmAuthFormComponent {
-  firm = {
-    name: '',
-    email: '',
-    phone: '',
-    password: ''
-  };
+  firm = { name: '', email: '', phone: '', password: ''};
+  FirmAuthFormMode = FirmAuthFormMode;
   confirmPassword = '';
-  isLoginMode = true;
-  isLoginOrRegistrationFail: any;
 
-  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {}
+  private _formMode: FirmAuthFormMode = FirmAuthFormMode.Login;
 
-  toggleMode() {
-    this.isLoginMode = !this.isLoginMode;
-    this.isLoginOrRegistrationFail = false; // Reset on mode toggle
+  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {
+    if(router.url === '/register') {
+      this.formMode = FirmAuthFormMode.Register;
+    }
+    else if(router.url === '/update') {
+      this.formMode = FirmAuthFormMode.Update;
+    }
+    else {
+      this.formMode = FirmAuthFormMode.Login;
+    }
+  }
+
+  get formMode() {
+    return this._formMode;
+  }
+
+  set formMode(value: FirmAuthFormMode) {
+    this._formMode = value;
+  }
+
+  get isLoginMode() { 
+    return this.formMode === FirmAuthFormMode.Login; 
   }
 
   onSubmit() {
-    this.isLoginOrRegistrationFail = false;
-    let apiUrl = 'http://localhost:5000';
-    if (!this.isLoginMode && this.firm.password !== this.confirmPassword) {
-      alert('Passwords do not match');
-      return;
+    switch(this.formMode) {
+      case FirmAuthFormMode.Login:
+        this.login();
+        break;
+      case FirmAuthFormMode.Register:
+        this.register();
+        break;
+      case FirmAuthFormMode.Update:
+        this.update();
+        break;
     }
+  }
 
-    const url = this.isLoginMode ? '/api/firms/login' : '/api/firms/register';
-    this.http.post(apiUrl + url, this.firm).subscribe({
+  update() {
+    validatePassword(this.firm.password, this.confirmPassword);
+
+    const url = API_ENDPOINTS.UPDATE;
+    this.http.put(CONSTANTS.API_URL + url, this.firm).subscribe({
       next: (response: any) => {
-        console.log(this.isLoginMode ? 'Firm logged in successfully' : 'Firm registered successfully', response);
-        this.cookieService.set('authToken', response.token, { path: '/', secure: true, sameSite: 'Strict' }); // Store the token in cookies
-        if(!this.isLoginMode) 
-          this.toggleMode();
+        alert(MESSAGES.UPDATE_SUCCESS);
         this.router.navigate(['/transactions']);
       },
       error: error => {
-        console.error(this.isLoginMode ? 'Error logging in firm' : 'Error registering firm', error);
-        this.isLoginOrRegistrationFail = true;
+        console.error(ERROR_MESSAGES.ERROR_UPDATE, error);
       },
       complete: () => {
         console.log('Request completed');
       }
     });
+  }
+
+  register() {
+    validatePassword(this.firm.password, this.confirmPassword);
+
+    const url = API_ENDPOINTS.REGISTER;
+    this.http.post(CONSTANTS.API_URL + url, this.firm).subscribe({
+      next: (response: any) => {
+        alert(MESSAGES.REGISTER_SUCCESS);
+        this.router.navigate(['/login']);
+      },
+      error: error => {
+        console.error(ERROR_MESSAGES.ERROR_REGISTER, error);
+      },
+      complete: () => {
+        console.log('Request completed');
+      }
+    });
+  }
+
+  private login() {
+    const url = API_ENDPOINTS.LOGIN;
+    this.http.post(CONSTANTS.API_URL + url, this.firm).subscribe({
+      next: (response: any) => {
+        this.cookieService.set('authToken', response.token, { path: '/', secure: true, sameSite: 'Strict' });
+        this.router.navigate(['/transactions']);
+      },
+      error: error => {
+        console.error(ERROR_MESSAGES.ERROR_LOGIN, error);
+      },
+      complete: () => {
+        console.log('Request completed');
+      }
+    });
+  }
+}
+
+function validatePassword(password: string, confirmPassword: string) {
+  if (password !== confirmPassword) {
+    throw new Error(ERROR_MESSAGES.PASSWORDS_DO_NOT_MATCH);
+  }
+  if (password.length < 8) {
+    throw new Error(ERROR_MESSAGES.PASSWORD_TOO_SHORT);
+  }
+  if (!/[A-Z]/.test(password)) {
+    throw new Error(ERROR_MESSAGES.PASSWORD_NO_UPPERCASE);
+  }
+  if (!/[a-z]/.test(password)) {
+    throw new Error(ERROR_MESSAGES.PASSWORD_NO_LOWERCASE);
+  }
+  if (!/[0-9]/.test(password)) {
+    throw new Error(ERROR_MESSAGES.PASSWORD_NO_NUMBER);
+  }
+  if (!/[!@#$%^&*]/.test(password)) {
+    throw new Error(ERROR_MESSAGES.PASSWORD_NO_SPECIAL_CHAR);
   }
 }
