@@ -24,6 +24,7 @@ export class FirmAuthFormComponent {
 
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
+    this.isLoginOrRegistrationFail = false; // Reset on mode toggle
   }
 
   onSubmit() {
@@ -40,7 +41,7 @@ export class FirmAuthFormComponent {
         console.log(this.isLoginMode ? 'Firm logged in successfully' : 'Firm registered successfully', response);
         this.cookieService.set('authToken', response.token, { path: '/', secure: true, sameSite: 'Strict' }); // Store the token in cookies
         if(!this.isLoginMode) 
-          this.isLoginMode = true;
+          this.toggleMode();
         this.router.navigate(['/transactions']);
       },
       error: error => {
