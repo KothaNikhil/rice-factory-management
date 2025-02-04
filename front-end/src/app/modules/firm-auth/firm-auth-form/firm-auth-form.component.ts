@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-firm-auth-form',
@@ -17,16 +18,16 @@ export class FirmAuthFormComponent {
   };
   confirmPassword = '';
   isLoginMode = true;
-  isRegistrationFail: any;
+  isLoginOrRegistrationFail: any;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {}
 
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
   }
 
   onSubmit() {
-    this.isRegistrationFail = false;
+    this.isLoginOrRegistrationFail = false;
     let apiUrl = 'http://localhost:5000';
     if (!this.isLoginMode && this.firm.password !== this.confirmPassword) {
       alert('Passwords do not match');
@@ -37,13 +38,14 @@ export class FirmAuthFormComponent {
     this.http.post(apiUrl + url, this.firm).subscribe({
       next: (response: any) => {
         console.log(this.isLoginMode ? 'Firm logged in successfully' : 'Firm registered successfully', response);
-        localStorage.setItem('authToken', response.token); // Store the token
-        this.isLoginMode = true;
+        this.cookieService.set('authToken', response.token, { path: '/', secure: true, sameSite: 'Strict' }); // Store the token in cookies
+        if(!this.isLoginMode) 
+          this.isLoginMode = true;
         this.router.navigate(['/transactions']);
       },
       error: error => {
         console.error(this.isLoginMode ? 'Error logging in firm' : 'Error registering firm', error);
-        this.isRegistrationFail = true;
+        this.isLoginOrRegistrationFail = true;
       },
       complete: () => {
         console.log('Request completed');

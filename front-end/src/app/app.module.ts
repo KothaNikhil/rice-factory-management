@@ -18,7 +18,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { FirmAuthFormComponent } from './modules/firm-auth/firm-auth-form/firm-auth-form.component';
 import { FormsModule } from '@angular/forms';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +45,6 @@ import { FormsModule } from '@angular/forms';
     //   useClass: AuthInterceptor,
     //   multi: true
     // }
-  
     provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]

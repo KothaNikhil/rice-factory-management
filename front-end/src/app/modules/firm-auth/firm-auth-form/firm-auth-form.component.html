@@ -34,6 +34,7 @@
       <button type="submit" [disabled]="!firmAuthForm.valid">{{ isLoginMode ? 'Login' : 'Register' }}</button>
       <p *ngIf="isLoginMode">Not registered? <a href="javascript:void(0)" (click)="toggleMode()">Register</a></p>
       <p *ngIf="!isLoginMode">Already registered? <a href="javascript:void(0)" (click)="toggleMode()">Login</a></p>
-      <p *ngIf="isRegistrationFail">"Registration failed, try agin!!"</p>
+      <p *ngIf="isLoginOrRegistrationFail && !isLoginMode" class="danger">"Registration failed, try agin!!"</p>
+      <p *ngIf="isLoginOrRegistrationFail && isLoginMode" class="danger">"Login failed, try agin!!"</p>
     </div>
   </form>
