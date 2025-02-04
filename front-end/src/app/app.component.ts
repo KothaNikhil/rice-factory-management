@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +9,9 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'rice-factory-management';
+  // isAuthenticated = false;
 
-  constructor(public authService: AuthService, private router: Router) {
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/login']);
-    }
+  constructor(public authService: AuthService) {
+    // this.isAuthenticated = this.authService.isAuthenticated();
   }
 }

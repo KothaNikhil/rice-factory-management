@@ -1,6 +1,6 @@
   <form (ngSubmit)="onSubmit()" #firmAuthForm="ngForm">
     <!-- Firm Name (only for registration) -->
-    <div class="form-group" *ngIf="formMode != FirmAuthFormMode.Login">
+    <div class="form-group" *ngIf="!isLoginMode">
       <label for="firmName">Firm Name</label>
       <input id="firmName" name="firmName" type="text" [(ngModel)]="firm.name" placeholder="Enter firm name" required />
     </div>
@@ -12,7 +12,7 @@
     </div>
 
     <!-- Mobile Number (only for registration) -->
-    <div class="form-group" *ngIf="formMode != FirmAuthFormMode.Login">
+    <div class="form-group" *ngIf="!isLoginMode">
       <label for="mobile">Mobile Number</label>
       <input id="mobile" name="mobile" type="tel" [(ngModel)]="firm.phone" placeholder="Enter mobile number" required />
     </div>
@@ -24,15 +24,17 @@
     </div>
 
     <!-- Confirm Password (only for registration) -->
-    <div class="form-group" *ngIf="formMode != FirmAuthFormMode.Login">
+    <div class="form-group" *ngIf="!isLoginMode">
       <label for="confirmPassword">Confirm Password</label>
       <input id="confirmPassword" name="confirmPassword" type="password" [(ngModel)]="confirmPassword" placeholder="Confirm password" required />
     </div>
 
     <!-- Submit Button -->
     <div class="submit-section">
-      <button type="submit" [disabled]="!firmAuthForm.valid">{{ formMode }}</button>
-      <p *ngIf="formMode == FirmAuthFormMode.Login">Not registered? <a href="javascript:void(0)" (click)="formMode = FirmAuthFormMode.Register">Register</a></p>
-      <p *ngIf="formMode == FirmAuthFormMode.Register">Already registered? <a href="javascript:void(0)" (click)="formMode = FirmAuthFormMode.Login">Login</a></p>
+      <button type="submit" [disabled]="!firmAuthForm.valid">{{ isLoginMode ? 'Login' : 'Register' }}</button>
+      <p *ngIf="isLoginMode">Not registered? <a href="javascript:void(0)" (click)="toggleMode()">Register</a></p>
+      <p *ngIf="!isLoginMode">Already registered? <a href="javascript:void(0)" (click)="toggleMode()">Login</a></p>
+      <p *ngIf="isLoginOrRegistrationFail && !isLoginMode" class="danger">"Registration failed, try agin!!"</p>
+      <p *ngIf="isLoginOrRegistrationFail && isLoginMode" class="danger">"Login failed, try agin!!"</p>
     </div>
   </form>

@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
 });
 
 // Get firm data (GET)
-router.get('/firm', async (req, res) => {
+router.get('/me', async (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   try {
     const decoded = jwt.verify(token, 'secret');
@@ -49,7 +49,7 @@ router.get('/firm', async (req, res) => {
 });
 
 // Update firm data (PUT)
-router.put('/firm', async (req, res) => {
+router.put('/me', async (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   const { name, email, password, address, phone } = req.body;
   try {
