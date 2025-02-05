@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { API_ENDPOINTS, CONSTANTS, ERROR_MESSAGES, MESSAGES } from '../../../constants/constants';
+import { filter } from 'rxjs';
 
 export enum FirmAuthFormMode {
   Login = 'login',
@@ -23,16 +24,24 @@ export class FirmAuthFormComponent {
 
   private _formMode: FirmAuthFormMode = FirmAuthFormMode.Login;
 
-  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {
-    if(router.url === '/register') {
-      this.formMode = FirmAuthFormMode.Register;
-    }
-    else if(router.url === '/update') {
-      this.formMode = FirmAuthFormMode.Update;
-    }
-    else {
-      this.formMode = FirmAuthFormMode.Login;
-    }
+  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) { }
+
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      let currentUrl = event.url;
+      if (currentUrl === '/register') {
+        this.formMode = FirmAuthFormMode.Register;
+      }
+      else if (currentUrl === '/update') {
+        this.formMode = FirmAuthFormMode.Update;
+      }
+      else {
+        this.formMode = FirmAuthFormMode.Login;
+      }
+      console.log('Form mode:', this.formMode);
+    });
   }
 
   get formMode() {
