@@ -32,7 +32,7 @@
     <!-- Submit Button -->
     <div class="submit-section">
       <button type="submit" [disabled]="!firmAuthForm.valid">{{ formMode }}</button>
-      <p *ngIf="formMode == FirmAuthFormMode.Login">Not registered? <a href="javascript:void(0)" (click)="formMode = FirmAuthFormMode.Register">Register</a></p>
-      <p *ngIf="formMode == FirmAuthFormMode.Register">Already registered? <a href="javascript:void(0)" (click)="formMode = FirmAuthFormMode.Login">Login</a></p>
+      <p *ngIf="formMode == FirmAuthFormMode.Login">Not registered? <a href="javascript:void(0)" routerLink="register">Register</a></p>
+      <p *ngIf="formMode == FirmAuthFormMode.Register">Already registered? <a href="javascript:void(0)" routerLink="login">Login</a></p>
     </div>
   </form>
