@@ -20,6 +20,7 @@ router.post('/register', async (req, res) => {
 
 // Login firm (POST)
 router.post('/login', async (req, res) => {
+  console.log(req.body);
   const { email, password } = req.body;
   try {
     const firm = await Firm.findOne({ email });
