@@ -4,6 +4,7 @@ const { Firm } = require('../services/firmService');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authenticate = require('../middleware/authenticate');
+const { invalidateToken } = require('../utils/tokenUtils');
 
 // Register firm (POST)
 router.post('/register', async (req, res) => {
@@ -66,6 +67,17 @@ router.put('/firm', authenticate, async (req, res) => {
     res.status(200).json({ message: 'Firm updated successfully', firm });
   } catch (error) {
     res.status(400).json({ message: 'Error updating firm data', error });
+  }
+});
+
+// Logout firm (POST)
+router.post('/logout', authenticate, (req, res) => {
+  try {
+    const token = req.headers.authorization.split(' ')[1];
+    invalidateToken(token);
+    res.status(200).json({ message: 'Firm logged out successfully' });
+  } catch (error) {
+    res.status(400).json({ message: 'Error logging out', error });
   }
 });
 
