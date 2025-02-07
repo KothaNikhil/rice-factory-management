@@ -19,7 +19,6 @@ router.post('/register', async (req, res) => {
 
 // Login firm (POST)
 router.post('/login', async (req, res) => {
-  console.log(req.body);
   const { email, password } = req.body;
   try {
     const firm = await Firm.findOne({ email });
@@ -53,22 +52,27 @@ router.get('/firm', async (req, res) => {
 
 // Update firm data (PUT)
 router.put('/firm', async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
+  console.log('update firm:',req.body);
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Authorization token missing' });
+  }
   const { name, email, password, address, phone } = req.body;
   try {
     const decoded = jwt.verify(token, 'secret');
     const firm = await Firm.findById(decoded.id);
     if (!firm) {
+      console.log("Firm not found");
       return res.status(404).json({ message: 'Firm not found' });
     }
     firm.name = name || firm.name;
     firm.email = email || firm.email;
-    firm.password = password ? await bcrypt.hash(password, 10) : firm.password;
+    firm.password = password || firm.password;
     firm.address = address || firm.address;
     firm.phone = phone || firm.phone;
     firm.dateUpdated.push(new Date());
     await firm.save();
-    res.status(200).json(firm);
+    res.status(200).json({ message: 'Firm updated successfully', firm });
   } catch (error) {
     res.status(400).json({ message: 'Error updating firm data', error });
   }
