@@ -1,8 +1,8 @@
-
 const mongoose = require('mongoose');
 
 // Define Transaction schema
 const transactionSchema = new mongoose.Schema({
+  firmId: { type: mongoose.Schema.Types.ObjectId, ref: 'Firm', required: true }, // Add firmId field
   transactionType: { 
     type: String, 
     enum: ['purchase', 'sale', 'salary'], 

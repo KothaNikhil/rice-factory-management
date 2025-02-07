@@ -1,21 +1,23 @@
-
 const express = require('express');
 const router = express.Router();
 const { Transaction } = require('../services/transactionService');
+const authenticate = require('../middleware/authenticate');
 
 // Add transaction (POST)
-router.post('/', async (req, res) => {
-  const { transactionType, name, item, quantity, price, amount, dateCreated, dateUpdated } = req.body;
+router.post('/', authenticate, async (req, res) => {
+  const { transactionType, name, item, quantity, price, amount, dateCreated } = req.body;
   try {
-    const transaction = new Transaction();
-    transaction.transactionType = transactionType;
-    transaction.name = name;
-    transaction.item = item;
-    transaction.quantity = quantity;
-    transaction.price = price;
-    transaction.amount = amount;
-    transaction.dateCreated = dateCreated;
-    transaction.dateUpdated = dateUpdated;
+    const transaction = new Transaction({
+      transactionType,
+      name,
+      item,
+      quantity,
+      price,
+      amount,
+      dateCreated: dateCreated || new Date(),
+      dateUpdated: [new Date()],
+      firmId: req.firmId // Set firmId from authenticated user
+    });
     await transaction.save();
     res.status(201).json(transaction);
   } catch (error) {
@@ -25,13 +27,14 @@ router.post('/', async (req, res) => {
 });
 
 // Get all transactions (GET)
-router.get('/', async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
   const { page = 0, pageSize = 10 } = req.query;
   const skip = parseInt(page) * parseInt(pageSize);
   const limit = parseInt(pageSize);
-
+  console.log('firmId', req.firmId);
   try {
-    const transactions = await Transaction.find().skip(skip).limit(limit);
+    const transactions = await Transaction.find({ firmId: req.firmId }).skip(skip).limit(limit); // Filter by firmId
+    console.log('transactions', transactions);
     res.status(200).json(transactions);
   } catch (error) {
     res.status(400).json({ message: 'Error fetching transactions', error });
@@ -39,9 +42,9 @@ router.get('/', async (req, res) => {
 });
 
 // Get all transaction names (GET)
-router.get('/names', async (req, res) => {
+router.get('/names', authenticate, async (req, res) => {
   try {
-    const transactions = await Transaction.find().select('name -_id');
+    const transactions = await Transaction.find({ firmId: req.firmId }).select('name -_id'); // Filter by firmId
     const names = [...new Set(transactions.map(transaction => transaction.name))];
     res.status(200).json(names);
   } catch (error) {
@@ -50,10 +53,10 @@ router.get('/names', async (req, res) => {
 });
 
 // Get transaction by ID (GET)
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
   const { id } = req.params;
   try {
-    const transaction = await Transaction.findById(id);
+    const transaction = await Transaction.findOne({ _id: id, firmId: req.firmId }); // Filter by firmId
     if (!transaction) {
       return res.status(404).json({ message: 'Transaction not found' });
     }
@@ -64,11 +67,11 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update transaction (PUT)
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
   const { id } = req.params;
-  const { transactionType, name, item, quantity, price, amount, dateCreated, dateUpdated } = req.body;
+  const { transactionType, name, item, quantity, price, amount, dateCreated } = req.body;
   try {
-    const transaction = await Transaction.findById(id);
+    const transaction = await Transaction.findOne({ _id: id, firmId: req.firmId }); // Filter by firmId
     if (!transaction) {
       return res.status(404).json({ message: 'Transaction not found' });
     }
@@ -78,8 +81,8 @@ router.put('/:id', async (req, res) => {
     transaction.quantity = quantity;
     transaction.price = price;
     transaction.amount = amount;
-    transaction.dateCreated = dateCreated;
-    transaction.dateUpdated = dateUpdated;
+    transaction.dateCreated = dateCreated || transaction.dateCreated;
+    transaction.dateUpdated.push(new Date());
     await transaction.save();
     res.status(200).json(transaction);
   } catch (error) {
@@ -88,10 +91,10 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete transaction (DELETE)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedTransaction = await Transaction.findByIdAndDelete(id);
+    const deletedTransaction = await Transaction.findOneAndDelete({ _id: id, firmId: req.firmId }); // Filter by firmId
     if (!deletedTransaction) {
       return res.status(404).json({ message: 'Transaction not found' });
     }

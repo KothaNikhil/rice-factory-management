@@ -3,6 +3,7 @@ const router = express.Router();
 const { Firm } = require('../services/firmService');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const authenticate = require('../middleware/authenticate');
 
 // Register firm (POST)
 router.post('/register', async (req, res) => {
@@ -33,14 +34,9 @@ router.post('/login', async (req, res) => {
 });
 
 // Get firm data (GET)
-router.get('/firm', async (req, res) => {
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ message: 'Authorization token missing' });
-  }
+router.get('/firm', authenticate, async (req, res) => {
   try {
-    const decoded = jwt.verify(token, 'secret');
-    const firm = await Firm.findById(decoded.id);
+    const firm = await Firm.findById(req.firmId);
     if (!firm) {
       return res.status(404).json({ message: 'Firm not found' });
     }
@@ -51,16 +47,11 @@ router.get('/firm', async (req, res) => {
 });
 
 // Update firm data (PUT)
-router.put('/firm', async (req, res) => {
-  console.log('update firm:',req.body);
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ message: 'Authorization token missing' });
-  }
+router.put('/firm', authenticate, async (req, res) => {
+  console.log('update firm:', req.body);
   const { name, email, password, address, phone } = req.body;
   try {
-    const decoded = jwt.verify(token, 'secret');
-    const firm = await Firm.findById(decoded.id);
+    const firm = await Firm.findById(req.firmId);
     if (!firm) {
       console.log("Firm not found");
       return res.status(404).json({ message: 'Firm not found' });
