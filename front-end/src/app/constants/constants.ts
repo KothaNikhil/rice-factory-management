@@ -6,7 +6,8 @@ export const API_ENDPOINTS = {
   LOGIN: '/api/firms/login',
   REGISTER: '/api/firms/register',
   UPDATE: '/api/firms/firm',
-  GET_FIRM: '/api/firms/firm'
+  GET_FIRM: '/api/firms/firm',
+  LOGOUT: '/api/firms/logout'
 };
 
 export const ERROR_MESSAGES = {

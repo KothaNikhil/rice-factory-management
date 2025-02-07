@@ -1,4 +1,10 @@
 <nav class="nav-links top-menu" align="end">
   <a routerLink="/search" routerLinkActive="active-link"><i class="fas fa-search menu-icon"></i> Search</a>
-  <a routerLink="/profileUpdate" routerLinkActive="active-link"><i class="fas fa-user menu-icon"></i> Profile</a>
+  <a #profileLink (click)="toggleProfileMenu()">
+    <i class="fas fa-user menu-icon"></i> Profile
+  </a>
+  <div #profileMenu class="profile-menu" [class.show]="showProfileMenu">
+    <a routerLink="/profileUpdate"><i class="fas fa-edit menu-icon"></i> Update</a>
+    <a (click)="logout()"><i class="fas fa-sign-out-alt menu-icon"></i> Logout</a>
+  </div>
 </nav>

@@ -10,9 +10,39 @@
   padding: 10px 20px;
   margin-bottom: 10px;
   transition: color 0.3s;
+  cursor: pointer;
 }
 
 .menu-icon {
   margin-right: 8px;
   color: rgb(0, 128, 0); 
+}
+
+.profile-menu {
+  display: none;
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.profile-menu.show {
+  display: block;
+}
+
+.profile-menu a {
+  display: block;
+  padding: 10px 20px;
+  color: black;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.profile-menu a i {
+  margin-right: 8px;
+}
+
+.profile-menu a:hover {
+  background-color: #f0f0f0;
 }
