@@ -1,6 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError, Subject, tap } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 export enum TransactionType {
   Purchase = 'purchase',
@@ -32,13 +33,19 @@ export class TransactionService {
   private editTransactionSource = new Subject<Transaction>();
   editTransaction$ = this.editTransactionSource.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     this.getTransactions(1, 10);
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.cookieService.get('authToken');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   // Add a new transaction
   addTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.post<Transaction>(this.apiUrl, transaction).pipe(
+    const headers = this.getAuthHeaders();
+    return this.http.post<Transaction>(this.apiUrl, transaction, { headers }).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
         return throwError(() => new Error('Failed to add transaction'));
@@ -50,11 +57,12 @@ export class TransactionService {
   }
 
   getTransactions(page: number, pageSize: number): Observable<Transaction[]> {
+    const headers = this.getAuthHeaders();
     const params = new HttpParams()
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
 
-    return this.http.get<Transaction[]>(this.apiUrl, { params }).pipe(
+    return this.http.get<Transaction[]>(this.apiUrl, { headers, params }).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
         return throwError(() => new Error('Failed to fetch transactions'));
@@ -63,7 +71,8 @@ export class TransactionService {
   }
 
   getTransactionNames(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/names`).pipe(
+    const headers = this.getAuthHeaders();
+    return this.http.get<string[]>(`${this.apiUrl}/names`, { headers }).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
         return throwError(() => new Error('Failed to fetch transaction names'));
@@ -76,7 +85,8 @@ export class TransactionService {
   }
 
   updateTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.put<Transaction>(`${this.apiUrl}/${transaction._id}`, transaction).pipe(
+    const headers = this.getAuthHeaders();
+    return this.http.put<Transaction>(`${this.apiUrl}/${transaction._id}`, transaction, { headers }).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
         return throwError(() => new Error('Failed to update transaction'));
@@ -88,7 +98,8 @@ export class TransactionService {
   }
 
   deleteTransaction(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers }).pipe(
       catchError((error) => {
         console.error('Error occurred:', error);
         return throwError(() => new Error('Failed to delete transaction'));
