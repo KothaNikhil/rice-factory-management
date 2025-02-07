@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { NavigationEnd, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
-import { API_ENDPOINTS, CONSTANTS, ERROR_MESSAGES, MESSAGES } from '../../../constants/constants';
+import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
+import { FirmAuthService } from '../services/firm-auth.service';
+import { ERROR_MESSAGES, MESSAGES } from '../../../constants/constants';
+import { AuthService } from 'src/app/services/auth.service';
 
 export enum FirmAuthFormMode {
   Login = 'login',
@@ -24,23 +24,30 @@ export class FirmAuthFormComponent {
 
   private _formMode: FirmAuthFormMode = FirmAuthFormMode.Login;
 
-  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) { }
-
-  ngOnInit(): void {
+  constructor(private firmAuthService: FirmAuthService, private router: Router, private authService: AuthService) { 
+    console.log('FirmAuthFormComponent created');
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       let currentUrl = event.url;
-      if (currentUrl === '/register') {
-        this.formMode = FirmAuthFormMode.Register;
+      console.log('Current URL:', currentUrl);
+      switch (currentUrl) {
+        case '/register':
+          this.formMode = FirmAuthFormMode.Register;
+          break;
+        case '/profileUpdate':
+          this.formMode = FirmAuthFormMode.Update;
+          this.preFillForm();
+          break;
+        case '/login':
+        default:
+          if (this.authService.isAuthenticated()) {
+            this.router.navigate(['/transactions']);
+          } else {
+            this.formMode = FirmAuthFormMode.Login;
+          }
+          break;
       }
-      else if (currentUrl === '/update') {
-        this.formMode = FirmAuthFormMode.Update;
-      }
-      else {
-        this.formMode = FirmAuthFormMode.Login;
-      }
-      console.log('Form mode:', this.formMode);
     });
   }
 
@@ -73,8 +80,7 @@ export class FirmAuthFormComponent {
   update() {
     validatePassword(this.firm.password, this.confirmPassword);
 
-    const url = API_ENDPOINTS.UPDATE;
-    this.http.put(CONSTANTS.API_URL + url, this.firm).subscribe({
+    this.firmAuthService.update(this.firm).subscribe({
       next: (response: any) => {
         alert(MESSAGES.UPDATE_SUCCESS);
         this.router.navigate(['/transactions']);
@@ -91,8 +97,7 @@ export class FirmAuthFormComponent {
   register() {
     validatePassword(this.firm.password, this.confirmPassword);
 
-    const url = API_ENDPOINTS.REGISTER;
-    this.http.post(CONSTANTS.API_URL + url, this.firm).subscribe({
+    this.firmAuthService.register(this.firm).subscribe({
       next: (response: any) => {
         alert(MESSAGES.REGISTER_SUCCESS);
         this.router.navigate(['/login']);
@@ -107,10 +112,9 @@ export class FirmAuthFormComponent {
   }
 
   private login() {
-    const url = API_ENDPOINTS.LOGIN;
-    this.http.post(CONSTANTS.API_URL + url, this.firm).subscribe({
+    this.firmAuthService.login(this.firm).subscribe({
       next: (response: any) => {
-        this.cookieService.set('authToken', response.token, { path: '/', secure: true, sameSite: 'Strict' });
+        this.firmAuthService.cookieService.set('authToken', response.token, { path: '/', secure: true, sameSite: 'Strict' });
         this.router.navigate(['/transactions']);
       },
       error: error => {
@@ -118,6 +122,22 @@ export class FirmAuthFormComponent {
       },
       complete: () => {
         console.log('Request completed');
+      }
+    });
+  }
+  
+  private preFillForm() {
+    this.firmAuthService.getFirm().subscribe({
+      next: (firmDetails: any) => {
+        this.firm.name = firmDetails.name;
+        this.firm.email = firmDetails.email;
+        this.firm.phone = firmDetails.phone;
+      },
+      error: error => {
+        console.error(ERROR_MESSAGES.ERROR_FETCHING_FIRM_DETAILS, error);
+      },
+      complete: () => {
+        console.log('Firm details fetched successfully');
       }
     });
   }

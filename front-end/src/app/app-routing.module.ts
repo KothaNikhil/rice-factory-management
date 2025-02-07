@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'transactions', loadChildren: () => import('./modules/transactions/transactions.module').then(m => m.TransactionsModule), canActivate: [authGuard] },
   { path: 'login', component: FirmAuthFormComponent },
   { path: 'register', component: FirmAuthFormComponent },
-  { path: 'update', component: FirmAuthFormComponent, canActivate: [authGuard] },
+  { path: 'profileUpdate', component: FirmAuthFormComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
 ];
 

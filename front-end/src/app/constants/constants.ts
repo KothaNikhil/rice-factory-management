@@ -5,7 +5,8 @@ export const CONSTANTS = {
 export const API_ENDPOINTS = {
   LOGIN: '/api/firms/login',
   REGISTER: '/api/firms/register',
-  UPDATE: '/api/firms/update'
+  UPDATE: '/api/firms/firm',
+  GET_FIRM: '/api/firms/firm'
 };
 
 export const ERROR_MESSAGES = {
@@ -17,7 +18,8 @@ export const ERROR_MESSAGES = {
   PASSWORD_NO_UPPERCASE: 'The password must contain at least one uppercase letter.',
   PASSWORD_NO_LOWERCASE: 'The password must contain at least one lowercase letter.',
   PASSWORD_NO_NUMBER: 'The password must contain at least one number.',
-  PASSWORD_NO_SPECIAL_CHAR: 'The password must contain at least one special character (!@#$%^&*).'
+  PASSWORD_NO_SPECIAL_CHAR: 'The password must contain at least one special character (!@#$%^&*).',
+  ERROR_FETCHING_FIRM_DETAILS: 'Error fetching firm details'
 };
 
 export const MESSAGES = {
