@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const { Firm } = require('../services/firmService');
@@ -36,7 +35,10 @@ router.post('/login', async (req, res) => {
 
 // Get firm data (GET)
 router.get('/firm', async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Authorization token missing' });
+  }
   try {
     const decoded = jwt.verify(token, 'secret');
     const firm = await Firm.findById(decoded.id);
