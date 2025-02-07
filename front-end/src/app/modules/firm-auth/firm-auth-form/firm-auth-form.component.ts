@@ -147,19 +147,4 @@ function validatePassword(password: string, confirmPassword: string) {
   if (password !== confirmPassword) {
     throw new Error(ERROR_MESSAGES.PASSWORDS_DO_NOT_MATCH);
   }
-  if (password.length < 8) {
-    throw new Error(ERROR_MESSAGES.PASSWORD_TOO_SHORT);
-  }
-  if (!/[A-Z]/.test(password)) {
-    throw new Error(ERROR_MESSAGES.PASSWORD_NO_UPPERCASE);
-  }
-  if (!/[a-z]/.test(password)) {
-    throw new Error(ERROR_MESSAGES.PASSWORD_NO_LOWERCASE);
-  }
-  if (!/[0-9]/.test(password)) {
-    throw new Error(ERROR_MESSAGES.PASSWORD_NO_NUMBER);
-  }
-  if (!/[!@#$%^&*]/.test(password)) {
-    throw new Error(ERROR_MESSAGES.PASSWORD_NO_SPECIAL_CHAR);
-  }
 }
