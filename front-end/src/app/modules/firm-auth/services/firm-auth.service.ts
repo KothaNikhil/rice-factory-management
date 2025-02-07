@@ -22,7 +22,9 @@ export class FirmAuthService {
 
   update(firm: any) {
     const url = API_ENDPOINTS.UPDATE;
-    return this.http.put(CONSTANTS.API_URL + url, firm);
+    const token = this.cookieService.get('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put(CONSTANTS.API_URL + url, firm, { headers });
   }
 
   getFirm() {
