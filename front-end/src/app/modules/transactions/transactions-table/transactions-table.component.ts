@@ -25,6 +25,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.loadTransactions();
+    console.log("test");
     this.transactionService.transactionAdded$.subscribe(transaction => {
       console.log('Transaction added:', transaction);
       this.refreshTable();
