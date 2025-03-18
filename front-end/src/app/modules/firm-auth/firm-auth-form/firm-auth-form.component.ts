@@ -23,6 +23,7 @@ export class FirmAuthFormComponent {
   confirmPassword = '';
 
   private _formMode: FirmAuthFormMode = FirmAuthFormMode.Login;
+  errorMessage: string = '';
 
   constructor(private firmAuthService: FirmAuthService, private router: Router, private authService: AuthService) { 
     console.log('FirmAuthFormComponent created');
@@ -118,7 +119,11 @@ export class FirmAuthFormComponent {
         this.router.navigate(['/transactions']);
       },
       error: error => {
-        console.error(ERROR_MESSAGES.ERROR_LOGIN, error);
+        if (error.error.message) {
+          this.errorMessage = error.error.message;
+        } else {
+          this.errorMessage = 'An error occurred during login';
+        }
       },
       complete: () => {
         console.log('Request completed');

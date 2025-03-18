@@ -1,5 +1,10 @@
 .transactions-container {
   display: flex;
+  flex-direction: column;
+}
+
+.transactions-content {
+  display: flex;
 }
 
 .transactions-form {
@@ -8,8 +13,24 @@
 }
 
 .transactions-table {
-  // Ensure the table takes up the remaining space
   flex: 1;
   padding-left: 15px;
   border-left: 0.5px solid rgb(0, 142, 0)
+}
+
+.transaction-type-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.transaction-type-buttons button {
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.transaction-type-buttons button.selected {
+  background-color: rgb(0, 173, 0);;
 }

@@ -1,13 +1,4 @@
 <form (ngSubmit)="onSubmit()" #transactionForm="ngForm">
-  <!-- Transaction Type -->
-  <div class="form-group">
-    <label for="transactionType">Transaction Type</label>
-    <select id="transactionType" name="transactionType" [(ngModel)]="transaction.transactionType" required>
-      <option [value]="TransactionType.Purchase">Purchase</option>
-      <option [value]="TransactionType.Sale">Sale</option>
-      <option [value]="TransactionType.Salary">Salary</option>
-    </select>
-  </div>
 
   <!-- Name -->
   <div class="form-group">

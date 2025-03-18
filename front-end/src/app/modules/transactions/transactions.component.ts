@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TransactionType } from './services/transaction.service';
 
 @Component({
     selector: 'app-transactions',
@@ -7,5 +8,10 @@ import { Component } from '@angular/core';
     standalone: false
 })
 export class TransactionsComponent {
-    constructor() {}
+    transactionTypes = Object.values(TransactionType);
+    selectedTransactionType: TransactionType = TransactionType.Purchase;
+
+    selectTransactionType(type: TransactionType) {
+        this.selectedTransactionType = type;
+    }
 }

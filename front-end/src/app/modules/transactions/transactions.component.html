@@ -1,4 +1,13 @@
 <div class="transactions-container">
-  <app-transactions-form class="transactions-form"></app-transactions-form>
-  <app-transactions-table class="transactions-table"></app-transactions-table>
+  <div class="transaction-type-buttons">
+    <button *ngFor="let type of transactionTypes" 
+            [class.selected]="selectedTransactionType === type" 
+            (click)="selectTransactionType(type)">
+      {{ type }}
+    </button>
+  </div>
+  <div class="transactions-content">
+    <app-transactions-form class="transactions-form" [transactionType]="selectedTransactionType"></app-transactions-form>
+    <app-transactions-table class="transactions-table"></app-transactions-table>
+  </div>
 </div>

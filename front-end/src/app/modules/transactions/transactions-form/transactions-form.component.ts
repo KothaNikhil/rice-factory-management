@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CATEGORIES } from 'src/app/shared/constants/predefined-items';
 import { NgForm } from '@angular/forms';
 import { Transaction, TransactionService, TransactionType } from '../services/transaction.service';
@@ -9,9 +9,10 @@ import { Transaction, TransactionService, TransactionType } from '../services/tr
   styleUrls: ['./transactions-form.component.scss'],
   standalone: false
 })
-export class TransactionsFormComponent {
+export class TransactionsFormComponent implements OnChanges {
   @ViewChild('transactionForm') transactionForm: NgForm | undefined;
-  
+  @Input() transactionType: TransactionType = TransactionType.Purchase;
+
   categories = CATEGORIES; // Assume CATEGORIES is imported
   selectedCategory: number | null = null;
   selectedItemUnit = '';
@@ -19,7 +20,7 @@ export class TransactionsFormComponent {
   filteredNames: string[] = []; // Add this line
 
   transaction: Transaction = {
-    transactionType: TransactionType.Purchase,
+    transactionType: this.transactionType,
     name: '',
     item: null,
     quantity: null,
@@ -44,6 +45,13 @@ export class TransactionsFormComponent {
       this.selectedItemUnit = this.getItemByName(transaction.item)?.unit || '';
       this.isEditMode = true;
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['transactionType']) {
+      this.resetForm();
+      this.transaction.transactionType = this.transactionType;
+    }
   }
 
   adjustTimeZone(date: Date): Date {

@@ -13,7 +13,8 @@ export class FirmAuthService {
 
   login(firm: any) {
     const url = API_ENDPOINTS.LOGIN;
-    return this.http.post(CONSTANTS.API_URL + url, firm);
+    let response = this.http.post(CONSTANTS.API_URL + url, firm);
+    return response;
   }
 
   register(firm: any) {

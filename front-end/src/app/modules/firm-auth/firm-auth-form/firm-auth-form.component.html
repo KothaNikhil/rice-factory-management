@@ -1,5 +1,10 @@
 <div class="container">
   <form (ngSubmit)="onSubmit()" #firmAuthForm="ngForm">
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message danger" align="center">
+      {{ errorMessage }}
+    </div>
+
     <!-- Firm Name (only for registration) -->
     <div class="form-group" *ngIf="formMode != FirmAuthFormMode.Login">
       <label for="firmName">Firm Name</label>
